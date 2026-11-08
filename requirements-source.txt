@@ -7,5 +7,5 @@ fontMath==0.10.0
 glyphsLib==6.17.2
 booleanOperations==0.10.0
 compreffor==0.6.0
-brotli==1.2.0
+brotli==1.2.1
 uharfbuzz==0.57.0
