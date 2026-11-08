@@ -139,6 +139,26 @@ also loads the WOFF2 fonts in Chromium, Firefox, and WebKit on Linux, macOS, and
 Windows, checking all Text weights/italics, canonical shaping, tabular numbers,
 mobile/desktop overflow, light/dark presentation, and download-failure fallback.
 Screenshots and measured widths are uploaded as workflow artifacts.
+The tested font distribution is also uploaded as the `font-distribution` artifact.
+
+### Releases
+
+Push a version tag matching the font metadata (for example, `v0.008`) to publish
+a GitHub Release. The tag runs the same build and tests on all three operating
+systems; publication only proceeds when the entire matrix passes. A mismatched
+tag fails verification. The release includes a ZIP of the tested TTF/WOFF2 fonts,
+coverage manifest, stylesheet, license, and README, plus `SHA256SUMS`.
+
+After updating the version in `build.py`, rebuilding the fonts, and committing
+the release changes:
+
+```sh
+git tag -a v0.008 -m "Altertable Sans 0.008"
+git push origin v0.008
+```
+
+Use the new version in place of `v0.008` for subsequent releases. Branch pushes,
+pull requests, and manual workflow runs build and test without publishing.
 
 Run the browser checks locally with:
 

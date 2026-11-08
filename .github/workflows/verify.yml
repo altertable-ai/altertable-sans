@@ -1,9 +1,13 @@
-name: Verify fonts
-on: [push, pull_request]
+name: Build, test, and release fonts
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
   verify:
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -17,6 +21,24 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python build.py
+      - name: Check release tag matches font version
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from fontTools.ttLib import TTFont
+
+          tag = os.environ['RELEASE_TAG']
+          for path in Path('fonts').glob('*.ttf'):
+              with TTFont(path) as font:
+                  version = font['name'].getDebugName(5).removeprefix('Version ')
+              if tag != f'v{version}':
+                  raise SystemExit(f'{path.name}: tag {tag} does not match v{version}')
+          PY
+        shell: bash
       - run: python verify.py
       - run: python -m unittest test_latin test_readability -v
       - run: python proof.py
@@ -29,10 +51,47 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:browser
+      - name: Upload tested font distribution
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: font-distribution
+          if-no-files-found: error
+          path: |
+            fonts/
+            altertable-sans.css
+            OFL.txt
+            README.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: font-proofs-${{ matrix.os }}
           path: |
             browser-results/
-            proofs/v0.008/
+            proofs/
+
+  release:
+    needs: verify
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: font-distribution
+          path: distribution
+      - name: Package and publish tested fonts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          archive="altertable-sans-${RELEASE_TAG}.zip"
+          cd distribution
+          zip -r "../${archive}" fonts altertable-sans.css OFL.txt README.md
+          cd ..
+          sha256sum "$archive" > SHA256SUMS
+          gh release create "$RELEASE_TAG" "$archive" SHA256SUMS \
+            --verify-tag --title "Altertable Sans ${RELEASE_TAG}" --generate-notes
