@@ -1,0 +1,60 @@
+name: CodeQL
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [actions, python]
+    env:
+      CODEQL_BUNDLE_VERSION: '2.27.4'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache the official CodeQL bundle
+        id: bundle
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/codeql-bundle
+          key: codeql-bundle-${{ env.CODEQL_BUNDLE_VERSION }}-${{ matrix.language }}-linux64
+      - name: Download the official bundle with retries
+        if: steps.bundle.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODEQL_LANGUAGE: ${{ matrix.language }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/codeql-bundle"
+          for attempt in 1 2 3 4 5; do
+            if gh release download "codeql-bundle-v${CODEQL_BUNDLE_VERSION}" \
+              --repo github/codeql-action \
+              --pattern "codeql-bundle-${CODEQL_LANGUAGE}-linux64.tar.zst" \
+              --dir "$RUNNER_TEMP/codeql-bundle" --clobber; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 5 ]; then sleep 15; fi
+          done
+          exit 1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          tools: ${{ runner.temp }}/codeql-bundle/codeql-bundle-${{ matrix.language }}-linux64.tar.zst
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
