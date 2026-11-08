@@ -95,10 +95,12 @@
       <point x="424" y="180" type="line"/>
       <point x="425" y="184" type="line"/>
       <point x="426" y="189" type="line"/>
-      <point x="427" y="194" type="line"/>
-      <point x="428" y="199" type="line"/>
+      <point x="428" y="194" type="line"/>
+      <point x="428" y="198" type="line"/>
       <point x="489" y="540" type="line"/>
       <point x="579" y="540" type="line"/>
+      <point x="518" y="198" type="line"/>
+      <point x="517" y="191" type="line"/>
       <point x="483" y="0" type="line"/>
       <point x="393" y="0" type="line"/>
       <point x="399" y="34" type="line"/>

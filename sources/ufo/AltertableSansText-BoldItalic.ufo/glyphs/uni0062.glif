@@ -135,6 +135,10 @@
       <point x="149" y="18" type="line"/>
       <point x="145" y="0" type="line"/>
       <point x="13" y="0" type="line"/>
+      <point x="48" y="197" type="line"/>
+      <point x="49" y="204" type="line"/>
+      <point x="74" y="344" type="line"/>
+      <point x="75" y="352" type="line"/>
       <point x="147" y="760" type="line"/>
       <point x="279" y="760" type="line"/>
       <point x="238" y="524" type="line"/>
@@ -331,8 +335,8 @@
       <point x="208" y="354" type="line"/>
       <point x="207" y="350" type="line"/>
       <point x="207" y="347" type="line"/>
-      <point x="206" y="343" type="line"/>
-      <point x="182" y="205" type="line"/>
+      <point x="206" y="344" type="line"/>
+      <point x="181" y="204" type="line"/>
       <point x="181" y="201" type="line"/>
     </contour>
   </outline>

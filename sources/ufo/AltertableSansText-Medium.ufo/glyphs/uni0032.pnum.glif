@@ -342,10 +342,10 @@
       <point x="156" y="522" type="line"/>
       <point x="155" y="517" type="line"/>
       <point x="155" y="512" type="line"/>
-      <point x="155" y="507" type="line"/>
-      <point x="154" y="501" type="line"/>
-      <point x="50" y="503" type="line"/>
-      <point x="51" y="510" type="line"/>
+      <point x="154" y="507" type="line"/>
+      <point x="154" y="502" type="line"/>
+      <point x="50" y="502" type="line"/>
+      <point x="50" y="510" type="line"/>
       <point x="51" y="518" type="line"/>
     </contour>
   </outline>

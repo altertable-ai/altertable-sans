@@ -109,9 +109,11 @@
       <point x="427" y="194" type="line"/>
       <point x="428" y="198" type="line"/>
       <point x="429" y="201" type="line"/>
-      <point x="430" y="205" type="line"/>
+      <point x="429" y="204" type="line"/>
       <point x="489" y="540" type="line"/>
       <point x="621" y="540" type="line"/>
+      <point x="561" y="204" type="line"/>
+      <point x="560" y="197" type="line"/>
       <point x="525" y="0" type="line"/>
       <point x="393" y="0" type="line"/>
       <point x="397" y="18" type="line"/>

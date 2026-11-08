@@ -205,9 +205,10 @@ errors, and skipped checks; a passing report alone does not establish readiness.
 The repaired fonts pass the profile without failing checks. Warnings still need
 review: the project vendor ID `ATBL` is not registered with Microsoft; Google
 Fonts subset definitions omit some supported marks and symbols; contour-count
-and caron checks include design heuristics. Small near-axis segments and narrow
-joins still receive outline-review warnings; these need type-design judgment,
-not indiscriminate contour simplification. No checks are excluded to hide
+and caron checks include design heuristics. Outline warnings for pinched joins,
+colliding per-mille circles, and near-axis curve terminals have been repaired
+in the source drawings and curve expansion, with dedicated regressions.
+No checks are excluded to hide
 these results. Metadata/catalog checks that need a `google/fonts` submission
 directory are skipped in this upstream repository. Before submission, complete
 the catalog metadata and designer attribution with the Google Fonts team, sign

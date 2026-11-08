@@ -46,12 +46,12 @@
       <point x="99" y="97" type="line"/>
       <point x="101" y="102" type="line"/>
       <point x="104" y="108" type="line"/>
-      <point x="106" y="113" type="line"/>
-      <point x="107" y="119" type="line"/>
-      <point x="109" y="126" type="line"/>
-      <point x="161" y="118" type="line"/>
+      <point x="106" y="114" type="line"/>
+      <point x="108" y="119" type="line"/>
+      <point x="109" y="125" type="line"/>
+      <point x="161" y="119" type="line"/>
       <point x="160" y="109" type="line"/>
-      <point x="157" y="100" type="line"/>
+      <point x="157" y="99" type="line"/>
       <point x="154" y="91" type="line"/>
       <point x="150" y="82" type="line"/>
       <point x="146" y="74" type="line"/>
@@ -95,12 +95,12 @@
       <point x="-146" y="74" type="line"/>
       <point x="-150" y="82" type="line"/>
       <point x="-154" y="91" type="line"/>
-      <point x="-157" y="100" type="line"/>
+      <point x="-157" y="99" type="line"/>
       <point x="-160" y="109" type="line"/>
-      <point x="-161" y="118" type="line"/>
-      <point x="-109" y="126" type="line"/>
-      <point x="-107" y="119" type="line"/>
-      <point x="-106" y="113" type="line"/>
+      <point x="-161" y="119" type="line"/>
+      <point x="-109" y="125" type="line"/>
+      <point x="-108" y="119" type="line"/>
+      <point x="-106" y="114" type="line"/>
     </contour>
   </outline>
 </glyph>

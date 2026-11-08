@@ -66,10 +66,10 @@
       <point x="369" y="885" type="line"/>
       <point x="372" y="890" type="line"/>
       <point x="374" y="895" type="line"/>
-      <point x="376" y="902" type="line"/>
-      <point x="446" y="890" type="line"/>
+      <point x="376" y="901" type="line"/>
+      <point x="447" y="891" type="line"/>
       <point x="443" y="881" type="line"/>
-      <point x="439" y="871" type="line"/>
+      <point x="438" y="871" type="line"/>
       <point x="434" y="862" type="line"/>
       <point x="428" y="853" type="line"/>
       <point x="422" y="844" type="line"/>
@@ -115,9 +115,9 @@
       <point x="107" y="862" type="line"/>
       <point x="105" y="871" type="line"/>
       <point x="104" y="881" type="line"/>
-      <point x="104" y="890" type="line"/>
-      <point x="178" y="902" type="line"/>
-      <point x="179" y="895" type="line"/>
+      <point x="104" y="891" type="line"/>
+      <point x="178" y="901" type="line"/>
+      <point x="178" y="895" type="line"/>
       <point x="179" y="890" type="line"/>
       <point x="180" y="885" type="line"/>
     </contour>

@@ -39,12 +39,18 @@ class FlattenPen(BasePen):
 
     def _moveTo(self, point):
         self.points = [point]
+        self.start_control = None
+        self.end_control = None
 
     def _lineTo(self, point):
         self.points.append(point)
+        self.end_control = None
 
     def _curveToOne(self, p1, p2, p3):
         p0 = self.points[-1]
+        if len(self.points) == 1:
+            self.start_control = next((p for p in (p1, p2, p3) if p != p0), None)
+        self.end_control = next((p for p in (p2, p1, p0) if p != p3), None)
         for step in range(1, 49):
             t = step / 48
             self.points.append(tuple(
@@ -58,6 +64,19 @@ class FlattenPen(BasePen):
         self._endPath()
 
     def _endPath(self):
+        # A sampled chord only approximates a curve's endpoint tangent. Project
+        # the adjacent sample onto the true tangent so open stroke caps keep
+        # their intended angle (notably the vertical cut on the tail of y).
+        if len(self.points) > 2 and self.points[0] != self.points[-1]:
+            for endpoint, neighbor, control in ((0, 1, self.start_control),
+                                                (-1, -2, self.end_control)):
+                if control is None:
+                    continue
+                x, y = self.points[endpoint]
+                dx, dy = control[0] - x, control[1] - y
+                nx, ny = self.points[neighbor]
+                amount = ((nx-x)*dx + (ny-y)*dy) / (dx*dx + dy*dy)
+                self.points[neighbor] = (x + amount*dx, y + amount*dy)
         self.paths.append(self.points)
         self.points = []
 

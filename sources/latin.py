@@ -27,7 +27,7 @@ LATIN = {
     '¶': (620, 'M360 -130 V690 H270 C-25 690 -25 340 270 340 H360 M530 690 V-130'),
     '†': (500, 'M250 -100 V730 M55 480 H445'),
     '‡': (500, 'M250 -100 V730 M55 480 H445 M55 150 H445'),
-    '§': (610, 'M495 600 C440 785 90 730 100 535 C110 450 520 445 510 200 C500 70 350 45 230 110 M115 90 C170 -95 520 -40 510 155 C500 240 90 245 100 490 C110 620 260 645 380 580'),
+    '§': (610, 'M495 600 C440 785 90 730 100 535 C110 450 520 445 510 200 C500 190 350 165 230 130 M115 90 C170 -95 520 -40 510 155 C500 240 90 245 100 490 C110 500 260 525 380 560'),
 }
 
 
@@ -76,5 +76,8 @@ def extend_latin(drawings, outline, stroke):
         slash = outline('M220 -15 L530 710', stroke * .6)
         drawings[char] = (770, unary_union([upper, lower, slash]))
     width, percent = drawings['%']
-    circle = affinity.translate(outline('M200 300 C30 300 30 0 200 0 C370 0 370 300 200 300 Z', stroke), xoff=780)
+    # Match the percent sign's optical stroke correction so its third circle
+    # remains separate at Bold, rather than touching the second circle.
+    circle = affinity.translate(outline('M200 300 C30 300 30 0 200 0 C370 0 370 300 200 300 Z',
+                                        stroke, (.9,)), xoff=780)
     drawings['‰'] = (1180, unary_union([percent, circle]))

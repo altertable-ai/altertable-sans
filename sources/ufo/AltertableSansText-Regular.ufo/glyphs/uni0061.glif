@@ -4,6 +4,9 @@
   <unicode hex="0061"/>
   <outline>
     <contour>
+      <point x="511" y="0" type="line"/>
+      <point x="421" y="0" type="line"/>
+      <point x="421" y="39" type="line"/>
       <point x="414" y="36" type="line"/>
       <point x="408" y="32" type="line"/>
       <point x="401" y="28" type="line"/>
@@ -210,8 +213,8 @@
       <point x="151" y="410" type="line"/>
       <point x="150" y="407" type="line"/>
       <point x="149" y="405" type="line"/>
-      <point x="148" y="402" type="line"/>
-      <point x="64" y="434" type="line"/>
+      <point x="148" y="403" type="line"/>
+      <point x="64" y="433" type="line"/>
       <point x="66" y="438" type="line"/>
       <point x="69" y="443" type="line"/>
       <point x="71" y="447" type="line"/>
@@ -308,9 +311,8 @@
       <point x="511" y="351" type="line"/>
       <point x="511" y="344" type="line"/>
       <point x="511" y="337" type="line"/>
-      <point x="511" y="0" type="line"/>
-      <point x="421" y="0" type="line"/>
-      <point x="421" y="39" type="line"/>
+      <point x="511" y="185" type="line"/>
+      <point x="511" y="178" type="line"/>
     </contour>
     <contour>
       <point x="411" y="265" type="line"/>
@@ -447,7 +449,7 @@
       <point x="419" y="168" type="line"/>
       <point x="420" y="172" type="line"/>
       <point x="420" y="175" type="line"/>
-      <point x="421" y="178" type="line"/>
+      <point x="421" y="179" type="line"/>
       <point x="421" y="181" type="line"/>
       <point x="421" y="185" type="line"/>
       <point x="421" y="264" type="line"/>

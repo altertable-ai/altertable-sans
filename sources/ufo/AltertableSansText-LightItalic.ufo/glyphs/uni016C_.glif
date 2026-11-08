@@ -153,7 +153,7 @@
       <point x="577" y="874" type="line"/>
       <point x="580" y="880" type="line"/>
       <point x="582" y="887" type="line"/>
-      <point x="626" y="880" type="line"/>
+      <point x="626" y="881" type="line"/>
       <point x="623" y="871" type="line"/>
       <point x="619" y="862" type="line"/>
       <point x="614" y="854" type="line"/>
@@ -201,9 +201,9 @@
       <point x="313" y="854" type="line"/>
       <point x="312" y="862" type="line"/>
       <point x="311" y="871" type="line"/>
-      <point x="311" y="880" type="line"/>
+      <point x="311" y="881" type="line"/>
       <point x="357" y="887" type="line"/>
-      <point x="358" y="880" type="line"/>
+      <point x="357" y="880" type="line"/>
       <point x="358" y="874" type="line"/>
       <point x="359" y="868" type="line"/>
     </contour>

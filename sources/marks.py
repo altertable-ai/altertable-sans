@@ -12,7 +12,8 @@ MARK_PATHS = ACCENTS | {
     '\u0307': 'M0 620 V700',
     '\u030b': 'M-140 600 L-40 730 M40 600 L140 730',
     '\u0326': 'M20 -35 V-90 L-25 -165',
-    '\u0328': 'M45 0 C-105 -90 -80 -205 65 -155',
+    # A vertical entry joins baseline stems without a diagonal hairline wedge.
+    '\u0328': 'M45 0 C45 -90 -80 -205 65 -155',
 }
 GAP = 45
 BOTTOM_GAP = 20
@@ -40,10 +41,11 @@ def base_anchor(width, form, kind):
     if kind == 'top':
         return ((x0+x1)/2, y1+GAP)
     if kind == 'ogonek':
-        # Attach to the lower-right ink, not the empty corner of its bounding box.
-        y = y0 + 25
+        # Bury the vertical entry inside the lower-right ink. The deeper overlap
+        # also clears the curved baseline of U/e without a narrow notch.
+        y = y0 + 50
         section = form.intersection(LineString([(x0-1, y), (x1+1, y)]))
-        return (section.bounds[2]-15, y)
+        return (section.bounds[2]-30, y)
     return ((x0+x1)/2, y0-BOTTOM_GAP if kind == 'bottom' else y0+12)
 
 

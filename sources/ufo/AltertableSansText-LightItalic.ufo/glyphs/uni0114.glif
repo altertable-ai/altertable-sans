@@ -63,7 +63,7 @@
       <point x="511" y="874" type="line"/>
       <point x="514" y="880" type="line"/>
       <point x="516" y="887" type="line"/>
-      <point x="560" y="880" type="line"/>
+      <point x="560" y="881" type="line"/>
       <point x="557" y="871" type="line"/>
       <point x="553" y="862" type="line"/>
       <point x="548" y="854" type="line"/>
@@ -111,9 +111,9 @@
       <point x="247" y="854" type="line"/>
       <point x="246" y="862" type="line"/>
       <point x="245" y="871" type="line"/>
-      <point x="245" y="880" type="line"/>
+      <point x="245" y="881" type="line"/>
       <point x="291" y="887" type="line"/>
-      <point x="292" y="880" type="line"/>
+      <point x="291" y="880" type="line"/>
       <point x="292" y="874" type="line"/>
       <point x="293" y="868" type="line"/>
     </contour>

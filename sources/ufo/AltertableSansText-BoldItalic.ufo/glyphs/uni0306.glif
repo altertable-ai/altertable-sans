@@ -46,10 +46,10 @@
       <point x="65" y="116" type="line"/>
       <point x="68" y="121" type="line"/>
       <point x="71" y="125" type="line"/>
-      <point x="73" y="130" type="line"/>
+      <point x="74" y="130" type="line"/>
       <point x="76" y="135" type="line"/>
-      <point x="78" y="142" type="line"/>
-      <point x="156" y="129" type="line"/>
+      <point x="78" y="140" type="line"/>
+      <point x="157" y="130" type="line"/>
       <point x="153" y="119" type="line"/>
       <point x="148" y="109" type="line"/>
       <point x="143" y="100" type="line"/>
@@ -97,8 +97,8 @@
       <point x="-191" y="100" type="line"/>
       <point x="-193" y="109" type="line"/>
       <point x="-194" y="119" type="line"/>
-      <point x="-194" y="129" type="line"/>
-      <point x="-111" y="142" type="line"/>
+      <point x="-194" y="130" type="line"/>
+      <point x="-111" y="140" type="line"/>
       <point x="-111" y="135" type="line"/>
       <point x="-111" y="130" type="line"/>
     </contour>
