@@ -119,7 +119,7 @@ and mark offsets; they are not a substitute for browser/platform testing.
 
 ### Brand and reading-rhythm proof
 
-Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.010 using
+Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.011 using
 real headlines, paragraphs, metrics, identifiers, and diagram labels. The proof
 includes light and dark surfaces, 12–48 px sizes, weights 400/450/500, and italics.
 Version 0.010 opens c/e apertures and s terminals, balances a sidebearings across
