@@ -27,7 +27,7 @@ def glyph_geometry(font, char):
 
 ROOT = Path(__file__).resolve().parent
 fonts = sorted((ROOT / 'fonts').glob('*.*tf')) + sorted((ROOT / 'fonts').glob('*.woff2'))
-manifest = json.loads((ROOT / 'fonts' / 'coverage.json').read_text())
+manifest = json.loads((ROOT / 'fonts' / 'coverage.json').read_text(encoding='utf-8'))
 assert len(fonts) == 2 * len(manifest), 'Expected TTF and WOFF2 for each style'
 expected_coverage = set(map(ord, manifest[0]['coverage']))
 required = set(range(32, 127)) | {ord(c) for c in 'ÀÜberGrößeCaféfaçadamañana€£“”…−©®™•●←→↑↓↔↗✓✕⨯°±≤≥≠∞«»'}

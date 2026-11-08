@@ -241,6 +241,6 @@ if __name__ == '__main__':
     report = [build('Text'), build('Display')]
     report.extend(build('Text', weight) for weight in TEXT_STYLES if weight != 400)
     report.extend(build('Text', weight, italic=True) for weight in TEXT_STYLES)
-    (ROOT / 'fonts' / 'coverage.json').write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
+    (ROOT / 'fonts' / 'coverage.json').write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n', encoding='utf-8', newline='\n')
     for entry in report:
         print(f"{entry['style']} {entry['weight']}: {entry['characters']} characters, {entry['seed_kerning_pairs']} seed pairs / {entry['kerning_pairs']} expanded kerning pairs")

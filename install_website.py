@@ -17,7 +17,7 @@ DESTINATION = REPOSITORY / 'src' / 'styles' / 'fonts' / 'altertable-sans'
 LICENSE_DIRECTORY = REPOSITORY / 'public' / 'fonts' / 'altertable-sans'
 
 sources = []
-for entry in json.loads((ROOT / 'fonts' / 'coverage.json').read_text()):
+for entry in json.loads((ROOT / 'fonts' / 'coverage.json').read_text(encoding='utf-8')):
     if entry['style'] != 'Text':
         continue
     weight, style = entry['weight'], entry['name']
