@@ -48,6 +48,27 @@ class Readability(unittest.TestCase):
             self.assertEqual((one.yMin, one.yMax), (four.yMin, four.yMax), path.name)
             self.assertEqual((one.yMin, one.yMax), (0, 720), path.name)
 
+    def test_proportional_and_tabular_figures(self):
+        for path in (ROOT / 'fonts').glob('*.ttf'):
+            def width(text, features):
+                return sum(position[1] for position in shape(path, text, features))
+            tabular = {'tnum': True}
+            proportional = {'pnum': True}
+            self.assertEqual(width('11,111', tabular), width('88,888', tabular), path.name)
+            self.assertLess(width('11,111', proportional), width('88,888', proportional), path.name)
+            self.assertLess(width('€1,234.56', proportional), width('€1,234.56', tabular), path.name)
+            self.assertEqual(width('11,111', {'pnum': True, 'tnum': True}), width('11,111', tabular), path.name)
+            font = TTFont(path)
+            name = font.getBestCmap()[ord('1')]
+            one, narrow = font['glyf'][name], font['glyf'][name + '.pnum']
+            self.assertEqual((narrow.yMin, narrow.yMax), (0, 720), path.name)
+            self.assertGreater(one.xMax - one.xMin, narrow.xMax - narrow.xMin, path.name)
+            for char in '0123456789':
+                glyph_name = font.getBestCmap()[ord(char)] + '.pnum'
+                glyph = font['glyf'][glyph_name]
+                if char == '1' and not font['OS/2'].fsSelection & 1:
+                    self.assertGreaterEqual(font['hmtx'][glyph_name][0], glyph.xMax, path.name)
+
     def test_identifiers_have_structural_distinctions(self):
         for path in (ROOT / 'fonts').glob('*.ttf'):
             f = TTFont(path); cmap = f.getBestCmap()

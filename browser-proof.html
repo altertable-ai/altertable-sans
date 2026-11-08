@@ -29,11 +29,12 @@ th { font-weight:500; color:var(--muted); }
 .scroll { overflow-x:auto; }
 .weight { display:grid; grid-template-columns:65px 1fr; gap:10px; padding:6px 0; border-bottom:1px solid var(--line); }
 .sample { overflow-wrap:anywhere; }
+.weight .sample { font-variant-numeric:proportional-nums; }
 @media(max-width:600px) { body { padding:14px; } .grid { grid-template-columns:1fr; gap:0; } section { padding:14px; } h1 { font-size:24px; } }
 </style>
 </head>
 <body><main>
-<header><div><p class="muted">Altertable Sans / interface proof / 0.011</p><h1>Workspace overview</h1></div><button data-fit>New insight</button></header>
+<header><div><p class="muted">Altertable Sans / interface proof / 0.012</p><h1>Workspace overview</h1></div><button data-fit>New insight</button></header>
 <div class="grid"><section><h2>Monthly revenue</h2><div class="metric">€12,345.67</div><p class="muted">+12.5% compared with the previous month</p><p><span class="tag" data-fit>Updated just now</span></p></section>
 <section><h2>Dataset settings</h2><label>Display name<input value="Cœur · Łódź · İstanbul · Știință" aria-label="Display name"></label><label>Identifier<input value="Il1_O0_customer_001" aria-label="Identifier"></label></section></div>
 <section class="scroll"><h2>Latest queries</h2><table><thead><tr><th>Query</th><th>Owner</th><th>Status</th><th class="number">Rows</th><th class="number">Duration</th></tr></thead><tbody>
@@ -41,7 +42,7 @@ th { font-weight:500; color:var(--muted); }
 <tr><td>Activation by cohort</td><td>Ľudovít</td><td>Complete</td><td class="number">11,111</td><td class="number">0.95 s</td></tr>
 <tr><td>Retention: first 30 days</td><td>François</td><td>Running</td><td class="number">99,999</td><td class="number">2.40 s</td></tr>
 </tbody></table></section>
-<section><h2>Reading sizes and styles</h2><div id="styles"></div></section>
+<section><h2>Reading sizes and styles</h2><p class="muted">Proportional figures for text; the table and metrics above use tabular figures. <a href="figure-spacing-proof.html">Compare figure spacing</a>.</p><div id="styles"></div></section>
 <section><h2>Accents and identifiers</h2><span id="identifier-probe" style="font-size:48px;display:inline-block;white-space:nowrap">Il1 O0</span><p style="font-size:24px" class="sample">Il1 O0 rn m · Ąą Ęę Įį Ųų Ľľ ďť · Ģģ Șș Țț ð</p><p id="nfc">Café naïve Ångström — İstanbul, cœur, Łódź.</p><p id="nfd"></p><p class="sample">q&#x301; x&#x308;&#x301; i&#x326;&#x30B; j&#x326;&#x301; į&#x301; į&#x307;&#x301;</p></section>
 </main><script>
 const weights=[300,400,450,500,600,700];

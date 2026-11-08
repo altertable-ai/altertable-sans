@@ -15,6 +15,7 @@ from shapely.geometry import LineString, Point, box
 from shapely.geometry.polygon import orient
 from shapely.ops import unary_union
 
+from sources.figures import add_figures, features as figure_features
 from sources.italics import ITALIC_GLYPHS
 from sources.latin import LATIN, extend_latin
 from sources.marks import add_accents, features as mark_features
@@ -164,6 +165,8 @@ def build(optical, weight=400, italic=False):
     compositions = add_accents(drawings, outline, stroke)
     attachment_features = mark_features(drawings, compositions, italic, tracking, glyph_name)
 
+    add_figures(drawings, outline, stroke)
+
     if italic:
         slope = math.tan(math.radians(10))
         drawings = {char: (width, affinity.affine_transform(shape, [1, slope, 0, 1, -270 * slope, 0]))
@@ -195,10 +198,10 @@ def build(optical, weight=400, italic=False):
         'styleName': legacy_style,
         'typographicFamily': family,
         'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.011',
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.012',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.011',
+        'version': 'Version 0.012',
         'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
@@ -224,7 +227,7 @@ def build(optical, weight=400, italic=False):
                 rules.append(f'pos {glyph_name(lchar)} {glyph_name(rchar)} {value};')
     addOpenTypeFeaturesFromString(fb.font, 'languagesystem DFLT dflt;\n'
                                  'languagesystem latn dflt;\nfeature kern {\nlookupflag IgnoreMarks;\n'
-                                 + '\n'.join(rules) + '\n} kern;\n' + attachment_features)
+                                 + '\n'.join(rules) + '\n} kern;\n' + attachment_features + figure_features(glyph_name))
     fb.font.recalcTimestamp = False
     fb.font['head'].macStyle = (1 if weight == 700 else 0) | (2 if italic else 0)
     fb.font['head'].created = EPOCH

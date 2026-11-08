@@ -54,7 +54,18 @@ try {
             const nfc = 'Café naïve Ångström Ąą Ęę Ľľ';
             const nfd = nfc.normalize('NFD');
             const digits = [...'0123456789'].map(c => context.measureText(c).width);
-            measurements.push({ weight, style, nfc:context.measureText(nfc).width,
+            function numericWidth(text, variant) {
+              const span = document.createElement('span');
+              span.style.cssText = `position:absolute;visibility:hidden;white-space:pre;font:${style} ${weight} 16px "Proof Sans";font-variant-numeric:${variant}`;
+              span.textContent = text;
+              document.body.append(span);
+              const width = span.getBoundingClientRect().width;
+              span.remove();
+              return width;
+            }
+            const proportionalSaving = numericWidth('11,111', 'tabular-nums') - numericWidth('11,111', 'proportional-nums');
+            const tabularDifference = numericWidth('11,111', 'tabular-nums') - numericWidth('88,888', 'tabular-nums');
+            measurements.push({ weight, style, proportionalSaving, tabularDifference, nfc:context.measureText(nfc).width,
               nfd:context.measureText(nfd).width, digitSpread:Math.max(...digits)-Math.min(...digits) });
           }
           await document.fonts.ready;
@@ -71,6 +82,8 @@ try {
         for (const m of metrics.measurements) {
           assert.ok(Math.abs(m.nfc-m.nfd) < .05, `${name}: NFC/NFD differ (${m.weight} ${m.style})`);
           assert.ok(m.digitSpread < .05, `${name}: digits not tabular`);
+          assert.ok(m.proportionalSaving > 10, `${name}: proportional figures did not narrow repeated ones`);
+          assert.ok(Math.abs(m.tabularDifference) < .05, `${name}: tabular rows do not align`);
         }
         await page.screenshot({ path:path.join(out,`${name}-${width}-${colorScheme}.png`), fullPage:true });
         results.push({ engine:name, width, colorScheme, ...metrics });

@@ -4,12 +4,12 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.011 · Experimental · SIL Open Font License 1.1**
+**Version 0.012 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.011 specimen](proofs/v0.011/proof.png)
+![Altertable Sans 0.012 specimen](proofs/v0.012/proof.png)
 
 ## Get the fonts
 
@@ -78,6 +78,21 @@ Display is supplied separately as `AltertableSansDisplay-Regular.woff2`; add an
 `@font-face` declaration under a separate family name if you want to use it.
 Keep a fallback stack for characters outside the font's coverage.
 
+### Numeral spacing
+
+Figures are tabular by default: every digit has the same advance for aligned
+columns. The tabular `1` has a short base to balance its otherwise narrow shape.
+Use proportional figures for running text; they include a narrower footless `1`
+and optically spaced digits, periods, and commas.
+
+```css
+.price-in-text { font-variant-numeric: proportional-nums; }
+.numeric-column { font-variant-numeric: tabular-nums; }
+```
+
+These use the font's `pnum` and `tnum` OpenType features. Compare the 0.011 default
+with both 0.012 options in [figure-spacing-proof.html](figure-spacing-proof.html).
+
 ## Character coverage
 
 Each style supports **374 Unicode characters**: printable ASCII, all letters in
@@ -119,7 +134,7 @@ and mark offsets; they are not a substitute for browser/platform testing.
 
 ### Brand and reading-rhythm proof
 
-Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.011 using
+Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.012 using
 real headlines, paragraphs, metrics, identifiers, and diagram labels. The proof
 includes light and dark surfaces, 12–48 px sizes, weights 400/450/500, and italics.
 Version 0.010 opens c/e apertures and s terminals, balances a sidebearings across

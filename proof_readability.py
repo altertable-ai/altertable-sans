@@ -4,7 +4,7 @@ from PIL import Image
 from proof_render import draw_text
 
 ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'proofs' / 'v0.011'
+OUT = ROOT / 'proofs' / 'v0.012'
 OUT.mkdir(parents=True, exist_ok=True)
 paths = sorted((ROOT / 'fonts').glob('*.ttf'))
 height = 190*len(paths)+30
