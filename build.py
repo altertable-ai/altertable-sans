@@ -1,0 +1,249 @@
+"""Build Altertable Sans proofing fonts from original centerline sources."""
+from pathlib import Path
+import json
+import math
+import unicodedata
+
+from fontTools.fontBuilder import FontBuilder
+from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
+from fontTools.pens.basePen import BasePen
+from fontTools.pens.ttGlyphPen import TTGlyphPen
+from fontTools.svgLib.path import parse_path
+from fontTools.ttLib import TTFont
+from shapely import affinity
+from shapely.geometry import LineString, Point, box
+from shapely.geometry.polygon import orient
+from shapely.ops import unary_union
+
+from sources.italics import ITALIC_GLYPHS
+from sources.glyphs import GLYPHS, EXTRA, ACCENTS, PATH_WEIGHTS
+from sources.spacing import SIDEBEARINGS, KERNING
+from sources.symbols import SYMBOLS, SYMBOL_WEIGHTS, SPACE_WIDTHS
+
+ROOT = Path(__file__).resolve().parent
+EPOCH = 3876940800
+TEXT_STYLES = {300: ('Light', 74), 400: ('Regular', 90), 450: ('Book', 97),
+               500: ('Medium', 104), 600: ('Semibold', 118), 700: ('Bold', 132)}
+
+
+class FlattenPen(BasePen):
+    def __init__(self):
+        super().__init__(None)
+        self.paths = []
+        self.points = []
+
+    def _moveTo(self, point):
+        self.points = [point]
+
+    def _lineTo(self, point):
+        self.points.append(point)
+
+    def _curveToOne(self, p1, p2, p3):
+        p0 = self.points[-1]
+        for step in range(1, 49):
+            t = step / 48
+            self.points.append(tuple(
+                (1-t)**3*p0[i] + 3*(1-t)**2*t*p1[i]
+                + 3*(1-t)*t*t*p2[i] + t**3*p3[i]
+                for i in (0, 1)
+            ))
+
+    def _closePath(self):
+        self.points.append(self.points[0])
+        self._endPath()
+
+    def _endPath(self):
+        self.paths.append(self.points)
+        self.points = []
+
+
+def outline(path, stroke, path_weights=(), lower_loop_shift=0):
+    pen = FlattenPen()
+    parse_path(path, pen)
+    horizontal_stroke = stroke * 0.92
+    terminal_heights = {0: 0, 510: 540, 690: 720, 730: 760, -210: -220}
+
+    def vertical_position(y):
+        if y <= 510:
+            return y * (540 - horizontal_stroke) / 510 + horizontal_stroke / 2
+        return 540 - horizontal_stroke / 2 + y - 510
+
+    shapes = []
+    for path_index, points in enumerate(pen.paths):
+        if len(points) < 2:
+            continue
+        if lower_loop_shift and path_index == 3:
+            points = [(x, y - lower_loop_shift) for x, y in points]
+        elif lower_loop_shift and path_index == 2:
+            points = [(x, y - lower_loop_shift * (245 - y) / 220) for x, y in points]
+        mapped = [(x, vertical_position(y)) for x, y in points]
+        lower, upper = -10000, 10000
+        if points[0] != points[-1]:
+            for index, neighbor in ((0, 1), (-1, -2)):
+                x, y = mapped[index]
+                nx, ny = mapped[neighbor]
+                source_y = points[index][1]
+                target = terminal_heights.get(source_y)
+                if target is None or abs(ny - y) < 0.001:
+                    continue
+                if (target - y) * (ny - y) >= 0:
+                    continue
+                mapped[index] = (x + (target - y) * (nx - x) / (ny - y), target)
+                if all(py >= source_y for _, py in points):
+                    lower = max(lower, target)
+                if all(py <= source_y for _, py in points):
+                    upper = min(upper, target)
+        path_stroke = stroke * (path_weights[path_index] if path_index < len(path_weights) else 1)
+        line = LineString([(x, y / 0.92) for x, y in mapped])
+        shape = affinity.scale(line.buffer(path_stroke / 2, cap_style=2, join_style=2),
+                               xfact=1, yfact=0.92, origin=(0, 0))
+        shapes.append(shape.intersection(box(-10000, lower, 10000, upper)))
+    return unary_union(shapes)
+
+
+def glyph_name(char):
+    return f'uni{ord(char):04X}'
+
+
+def tt_glyph(shape):
+    pen = TTGlyphPen(None)
+    if not shape.is_empty:
+        polygons = [shape] if shape.geom_type == 'Polygon' else shape.geoms
+        for polygon in polygons:
+            polygon = orient(polygon, sign=-1)
+            for ring in [polygon.exterior, *polygon.interiors]:
+                points = []
+                for x, y in ring.coords[:-1]:
+                    point = (round(x), round(y))
+                    if not points or point != points[-1]:
+                        points.append(point)
+                if len(set(points)) < 3:
+                    raise ValueError('Degenerate contour after grid rounding')
+                pen.moveTo(points[0])
+                for point in points[1:]:
+                    pen.lineTo(point)
+                pen.closePath()
+    return pen.glyph()
+
+
+def build(optical, weight=400, italic=False):
+    style, stroke = TEXT_STYLES[weight]
+    if optical == 'Display':
+        stroke = 86
+    tracking = 6 if optical == 'Text' else 0
+    alternates = ITALIC_GLYPHS if italic else {}
+    drawings = {
+        char: (width, outline(path, stroke, () if char in alternates else (PATH_WEIGHTS | SYMBOL_WEIGHTS).get(char, ()),
+                              max(0, (stroke - 90) * 1.1) if char == 'g' and not italic else 0))
+        for char, (width, path) in (GLYPHS | EXTRA | SYMBOLS | alternates).items()
+    }
+    for char in 'VWvw':
+        width, shape = drawings[char]
+        drawings[char] = (width, shape.intersection(box(-10000, 0, 10000, 10000)))
+    for char, (left, right) in SIDEBEARINGS.items():
+        _, shape = drawings[char]
+        shape = affinity.translate(shape, xoff=left - shape.bounds[0])
+        drawings[char] = (round(shape.bounds[2] + right), shape)
+    drawings['\u00a0'] = drawings[' ']
+    drawings['\u2007'] = (drawings['0'][0], outline('', stroke))
+    for char, width in SPACE_WIDTHS.items():
+        drawings[char] = (width, outline('', stroke))
+    for char in ('\u00ad', '\u2011'):
+        drawings[char] = drawings['-']
+    for char, radius in (('•', 55), ('●', 115)):
+        drawings[char] = (350, Point(175, 300).buffer(radius, quad_segs=32))
+    for code in range(0x00C0, 0x0180):
+        char = chr(code)
+        parts = unicodedata.normalize('NFD', char)
+        if len(parts) != 2 or parts[0] not in drawings or parts[1] not in ACCENTS:
+            continue
+        base, accent = parts
+        width, shape = drawings[base]
+        if base == 'i':
+            shape = outline('M125 0 V510', stroke)
+            shape = affinity.translate(shape, xoff=SIDEBEARINGS['i'][0] - shape.bounds[0])
+        mark = outline(ACCENTS[accent], stroke * 0.78)
+        height = 185 if base.isupper() and accent != '\u0327' else 0
+        mark = affinity.translate(mark, xoff=width / 2, yoff=height)
+        drawings[char] = (width, unary_union([shape, mark]))
+
+    if italic:
+        slope = math.tan(math.radians(10))
+        drawings = {char: (width, affinity.affine_transform(shape, [1, slope, 0, 1, -270 * slope, 0]))
+                    for char, (width, shape) in drawings.items()}
+
+    missing_shape = outline('M90 0 V700 H510 V0 Z M90 0 L510 700', 55)
+    glyphs = {'.notdef': tt_glyph(missing_shape)}
+    metrics = {'.notdef': (600, round(missing_shape.bounds[0]))}
+    for char, (width, shape) in drawings.items():
+        shape = affinity.translate(shape, xoff=tracking / 2)
+        name = glyph_name(char)
+        glyphs[name] = tt_glyph(shape)
+        metrics[name] = (width + tracking if width else 0, round(shape.bounds[0]) if not shape.is_empty else 0)
+
+    fb = FontBuilder(1000, isTTF=True)
+    fb.setupGlyphOrder(list(glyphs))
+    fb.setupCharacterMap({ord(c): glyph_name(c) for c in drawings})
+    fb.setupGlyf(glyphs)
+    fb.setupHorizontalMetrics(metrics)
+    fb.setupHorizontalHeader(ascent=1000, descent=-280, lineGap=0,
+                             caretSlopeRise=1000, caretSlopeRun=176 if italic else 0)
+    family = f'Altertable Sans {optical}'
+    subfamily = ('Italic' if weight == 400 else f'{style} Italic') if italic else style
+    filename_style = subfamily.replace(' ', '')
+    legacy_style = ('Bold Italic' if weight == 700 else 'Italic') if italic else ('Bold' if weight == 700 else 'Regular')
+    fb.setupNameTable({
+        'familyName': family if weight in (400, 700) else f'{family} {style}',
+        'styleName': legacy_style,
+        'typographicFamily': family,
+        'typographicSubfamily': subfamily,
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.006',
+        'fullName': f'{family} {subfamily}',
+        'psName': f'AltertableSans{optical}-{filename_style}',
+        'version': 'Version 0.006',
+        'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
+        'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
+        'licenseInfoURL': 'https://openfontlicense.org',
+        'description': 'Original experimental proofing font. Not production-ready.',
+    })
+    fb.setupOS2(sTypoAscender=1000, sTypoDescender=-280, sTypoLineGap=0,
+                usWinAscent=1000, usWinDescent=280, sxHeight=540, sCapHeight=720,
+                version=4,
+                usWeightClass=weight, usWidthClass=5, fsType=0,
+                fsSelection=(0x81 | (0x20 if weight == 700 else 0)) if italic else (0xA0 if weight == 700 else (0xC0 if weight == 400 else 0x80)))
+    fb.setupPost(italicAngle=-10 if italic else 0)
+    fb.setupMaxp()
+    # Propagate the seed pairs to their precomposed accented counterparts.
+    groups = {}
+    for char in drawings:
+        base = unicodedata.normalize('NFD', char)[0]
+        groups.setdefault(base, []).append(char)
+    rules = []
+    for (left, right), value in KERNING.items():
+        for lchar in groups[left]:
+            for rchar in groups[right]:
+                rules.append(f'pos {glyph_name(lchar)} {glyph_name(rchar)} {value};')
+    addOpenTypeFeaturesFromString(fb.font, 'languagesystem DFLT dflt;\n'
+                                 'languagesystem latn dflt;\nfeature kern {\n'
+                                 + '\n'.join(rules) + '\n} kern;')
+    fb.font.recalcTimestamp = False
+    fb.font['head'].macStyle = (1 if weight == 700 else 0) | (2 if italic else 0)
+    fb.font['head'].created = EPOCH
+    fb.font['head'].modified = EPOCH
+    path = ROOT / 'fonts' / f'AltertableSans{optical}-{filename_style}.ttf'
+    fb.save(path)
+    font = TTFont(path, recalcTimestamp=False)
+    font.flavor = 'woff2'
+    font.save(path.with_suffix('.woff2'))
+    return {'style': optical, 'weight': weight, 'name': filename_style, 'italic': italic, 'characters': len(drawings), 'glyphs': len(glyphs),
+            'seed_kerning_pairs': len(KERNING), 'kerning_pairs': len(rules), 'coverage': ''.join(sorted(drawings))}
+
+
+if __name__ == '__main__':
+    (ROOT / 'fonts').mkdir(exist_ok=True)
+    report = [build('Text'), build('Display')]
+    report.extend(build('Text', weight) for weight in TEXT_STYLES if weight != 400)
+    report.extend(build('Text', weight, italic=True) for weight in TEXT_STYLES)
+    (ROOT / 'fonts' / 'coverage.json').write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
+    for entry in report:
+        print(f"{entry['style']} {entry['weight']}: {entry['characters']} characters, {entry['seed_kerning_pairs']} seed pairs / {entry['kerning_pairs']} expanded kerning pairs")

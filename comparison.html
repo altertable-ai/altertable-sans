@@ -1,0 +1,1242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Altertable Sans · letter comparison</title>
+    <style>
+      @font-face {
+        font-family: Reference;
+        src: url('.reference/AnthropicSans-Roman.woff2');
+        font-weight: 300 800;
+      }
+      @font-face {
+        font-family: Before;
+        src: url('proofs/v0.004/AltertableSansText-Regular.woff2');
+      }
+      @font-face {
+        font-family: After;
+        src: url('fonts/AltertableSansText-Regular.woff2?v=6');
+      }
+      @font-face {
+        font-family: BeforeDisplay;
+        src: url('proofs/v0.004/AltertableSansDisplay-Regular.woff2');
+      }
+      @font-face {
+        font-family: AfterDisplay;
+        src: url('fonts/AltertableSansDisplay-Regular.woff2?v=6');
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f5f3ed;
+        color: #22221f;
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1440px;
+        margin: auto;
+        padding: 40px;
+      }
+      h1 {
+        font: 400 36px/1.2 system-ui;
+        margin: 16px 0;
+      }
+      h2 {
+        font: 600 20px system-ui;
+        margin: 40px 0 20px;
+      }
+      a {
+        color: inherit;
+        text-underline-offset: 4px;
+      }
+      p {
+        max-width: 90ch;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 12px;
+      }
+      .tile {
+        border: 1px solid #ccc9c0;
+        padding: 12px;
+        background: #fffefa;
+      }
+      .samples {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: baseline;
+        gap: 12px;
+      }
+      .samples span {
+        text-align: center;
+      }
+      .letter {
+        font-size: 48px;
+        line-height: 1.5;
+      }
+      .caption {
+        font: 11px system-ui;
+        color: #65645c;
+      }
+      .reference {
+        font-family: Reference;
+        font-weight: 400;
+        font-optical-sizing: none;
+        font-variation-settings: 'opsz' 16;
+      }
+      .before {
+        font-family: Before;
+      }
+      .after {
+        font-family: After;
+      }
+      .mini {
+        font-size: 14px;
+        line-height: 2;
+      }
+      .proofrow {
+        display: grid;
+        grid-template-columns: 100px repeat(3, minmax(0, 1fr));
+        border-bottom: 1px solid #d3d0c7;
+        padding: 14px 0;
+        align-items: baseline;
+        gap: 18px;
+      }
+      .proofrow span {
+        overflow-wrap: anywhere;
+      }
+      .big {
+        font-size: 140px;
+        line-height: 1.3;
+      }
+      .note {
+        font-size: 13px;
+        color: #65645c;
+      }
+      #reference-status {
+        padding: 12px;
+        border: 1px solid #ccc9c0;
+      }
+      @media (max-width: 800px) {
+        main {
+          padding: 20px;
+        }
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        }
+        .proofrow {
+          grid-template-columns: 1fr;
+        }
+        .big {
+          font-size: 100px;
+        }
+      }
+      @media (max-width: 430px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="specimen.html">Back to specimen</a>
+      <h1>Anthropic Sans / Altertable Sans</h1>
+      <p>
+        Each group shows Anthropic Sans Text Regular, Altertable 0.004, then the
+        current Altertable Text. Identical CSS size and weight; reference optical
+        size fixed at 16. The reference is a local comparison asset, excluded
+        from the open-source font package.
+      </p>
+      <p id="reference-status">Checking reference font…</p>
+      <p>
+        Revision 0.006 adds dedicated italic Text faces alongside the six
+        upright weights. This comparison shows Regular; the specimen includes
+        the other weights. The previous 0.004 is preserved in the middle column.
+        Inspect individual forms below, then compare the word and punctuation
+        spacing proofs.
+      </p>
+      <section id="small-g">
+        <h2>The double-storey g at reading sizes</h2>
+        <div class="proofrow caption">
+          <span>Size</span><span>Anthropic Sans</span
+          ><span>Altertable 0.004</span><span>Altertable 0.006</span>
+        </div>
+        <div class="proofrow">
+          <span>12 px</span
+          ><span class="reference" style="font-size: 12px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="before" style="font-size: 12px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="after" style="font-size: 12px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          >
+        </div>
+        <div class="proofrow">
+          <span>14 px</span
+          ><span class="reference" style="font-size: 14px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="before" style="font-size: 14px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="after" style="font-size: 14px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          >
+        </div>
+        <div class="proofrow">
+          <span>16 px</span
+          ><span class="reference" style="font-size: 16px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="before" style="font-size: 16px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="after" style="font-size: 16px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          >
+        </div>
+        <div class="proofrow">
+          <span>20 px</span
+          ><span class="reference" style="font-size: 20px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="before" style="font-size: 20px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="after" style="font-size: 20px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          >
+        </div>
+        <div class="proofrow">
+          <span>28 px</span
+          ><span class="reference" style="font-size: 28px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="before" style="font-size: 28px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          ><span class="after" style="font-size: 28px"
+            >g gg giggling<br />aligning again<br />language &amp; design</span
+          >
+        </div>
+        <div class="proofrow big">
+          <span class="caption">Enlarged</span><span class="reference">g</span
+          ><span class="before">g</span><span class="after">g</span>
+        </div>
+      </section>
+      <section id="spacing">
+        <h2>Terminals, diagonals, and spacing · 24 px</h2>
+        <div class="proofrow caption">
+          <span>Focus</span><span>Anthropic</span><span>0.004</span
+          ><span>0.006</span>
+        </div>
+        <div class="proofrow">
+          <span class="caption">Terminals</span
+          ><span class="reference" style="font-size: 24px"
+            >coffee first; clear text.</span
+          ><span class="before" style="font-size: 24px"
+            >coffee first; clear text.</span
+          ><span class="after" style="font-size: 24px"
+            >coffee first; clear text.</span
+          >
+        </div>
+        <div class="proofrow">
+          <span class="caption">Curves</span
+          ><span class="reference" style="font-size: 24px"
+            >CARGO · QUICK · SCORE</span
+          ><span class="before" style="font-size: 24px"
+            >CARGO · QUICK · SCORE</span
+          ><span class="after" style="font-size: 24px"
+            >CARGO · QUICK · SCORE</span
+          >
+        </div>
+        <div class="proofrow">
+          <span class="caption">Diagonals</span
+          ><span class="reference" style="font-size: 24px"
+            >AVATAR · WAVE · TAXI</span
+          ><span class="before" style="font-size: 24px"
+            >AVATAR · WAVE · TAXI</span
+          ><span class="after" style="font-size: 24px"
+            >AVATAR · WAVE · TAXI</span
+          >
+        </div>
+        <div class="proofrow">
+          <span class="caption">Lowercase</span
+          ><span class="reference" style="font-size: 24px"
+            >vivid waxy skyline</span
+          ><span class="before" style="font-size: 24px">vivid waxy skyline</span
+          ><span class="after" style="font-size: 24px">vivid waxy skyline</span>
+        </div>
+        <div class="proofrow">
+          <span class="caption">Joins</span
+          ><span class="reference" style="font-size: 24px"
+            >KERN · MARK · NEW</span
+          ><span class="before" style="font-size: 24px">KERN · MARK · NEW</span
+          ><span class="after" style="font-size: 24px">KERN · MARK · NEW</span>
+        </div>
+        <div class="proofrow">
+          <span class="caption">Spacing</span
+          ><span class="reference" style="font-size: 24px"
+            >minimum rhythm; little room.</span
+          ><span class="before" style="font-size: 24px"
+            >minimum rhythm; little room.</span
+          ><span class="after" style="font-size: 24px"
+            >minimum rhythm; little room.</span
+          >
+        </div>
+        <div class="proofrow">
+          <span class="caption">Punctuation</span
+          ><span class="reference" style="font-size: 24px"
+            >To. Va, Wo. “AVATAR”</span
+          ><span class="before" style="font-size: 24px"
+            >To. Va, Wo. “AVATAR”</span
+          ><span class="after" style="font-size: 24px"
+            >To. Va, Wo. “AVATAR”</span
+          >
+        </div>
+        <div class="proofrow">
+          <span class="caption">Accents</span
+          ><span class="reference" style="font-size: 24px"
+            >ÀV · Tó · Yé · CÁFE</span
+          ><span class="before" style="font-size: 24px"
+            >ÀV · Tó · Yé · CÁFE</span
+          ><span class="after" style="font-size: 24px"
+            >ÀV · Tó · Yé · CÁFE</span
+          >
+        </div>
+      </section>
+      <section id="lowercase">
+        <h2>Lowercase · 48 px / 14 px</h2>
+        <div class="grid">
+          <div class="tile">
+            <div class="caption">a</div>
+            <div class="samples letter">
+              <span class="reference">a</span><span class="before">a</span
+              ><span class="after">a</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">aaa</span><span class="before">aaa</span
+              ><span class="after">aaa</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">b</div>
+            <div class="samples letter">
+              <span class="reference">b</span><span class="before">b</span
+              ><span class="after">b</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">bbb</span><span class="before">bbb</span
+              ><span class="after">bbb</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">c</div>
+            <div class="samples letter">
+              <span class="reference">c</span><span class="before">c</span
+              ><span class="after">c</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ccc</span><span class="before">ccc</span
+              ><span class="after">ccc</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">d</div>
+            <div class="samples letter">
+              <span class="reference">d</span><span class="before">d</span
+              ><span class="after">d</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ddd</span><span class="before">ddd</span
+              ><span class="after">ddd</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">e</div>
+            <div class="samples letter">
+              <span class="reference">e</span><span class="before">e</span
+              ><span class="after">e</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">eee</span><span class="before">eee</span
+              ><span class="after">eee</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">f</div>
+            <div class="samples letter">
+              <span class="reference">f</span><span class="before">f</span
+              ><span class="after">f</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">fff</span><span class="before">fff</span
+              ><span class="after">fff</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">g</div>
+            <div class="samples letter">
+              <span class="reference">g</span><span class="before">g</span
+              ><span class="after">g</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ggg</span><span class="before">ggg</span
+              ><span class="after">ggg</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">h</div>
+            <div class="samples letter">
+              <span class="reference">h</span><span class="before">h</span
+              ><span class="after">h</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">hhh</span><span class="before">hhh</span
+              ><span class="after">hhh</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">i</div>
+            <div class="samples letter">
+              <span class="reference">i</span><span class="before">i</span
+              ><span class="after">i</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">iii</span><span class="before">iii</span
+              ><span class="after">iii</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">j</div>
+            <div class="samples letter">
+              <span class="reference">j</span><span class="before">j</span
+              ><span class="after">j</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">jjj</span><span class="before">jjj</span
+              ><span class="after">jjj</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">k</div>
+            <div class="samples letter">
+              <span class="reference">k</span><span class="before">k</span
+              ><span class="after">k</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">kkk</span><span class="before">kkk</span
+              ><span class="after">kkk</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">l</div>
+            <div class="samples letter">
+              <span class="reference">l</span><span class="before">l</span
+              ><span class="after">l</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">lll</span><span class="before">lll</span
+              ><span class="after">lll</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">m</div>
+            <div class="samples letter">
+              <span class="reference">m</span><span class="before">m</span
+              ><span class="after">m</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">mmm</span><span class="before">mmm</span
+              ><span class="after">mmm</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">n</div>
+            <div class="samples letter">
+              <span class="reference">n</span><span class="before">n</span
+              ><span class="after">n</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">nnn</span><span class="before">nnn</span
+              ><span class="after">nnn</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">o</div>
+            <div class="samples letter">
+              <span class="reference">o</span><span class="before">o</span
+              ><span class="after">o</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ooo</span><span class="before">ooo</span
+              ><span class="after">ooo</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">p</div>
+            <div class="samples letter">
+              <span class="reference">p</span><span class="before">p</span
+              ><span class="after">p</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ppp</span><span class="before">ppp</span
+              ><span class="after">ppp</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">q</div>
+            <div class="samples letter">
+              <span class="reference">q</span><span class="before">q</span
+              ><span class="after">q</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">qqq</span><span class="before">qqq</span
+              ><span class="after">qqq</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">r</div>
+            <div class="samples letter">
+              <span class="reference">r</span><span class="before">r</span
+              ><span class="after">r</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">rrr</span><span class="before">rrr</span
+              ><span class="after">rrr</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">s</div>
+            <div class="samples letter">
+              <span class="reference">s</span><span class="before">s</span
+              ><span class="after">s</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">sss</span><span class="before">sss</span
+              ><span class="after">sss</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">t</div>
+            <div class="samples letter">
+              <span class="reference">t</span><span class="before">t</span
+              ><span class="after">t</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ttt</span><span class="before">ttt</span
+              ><span class="after">ttt</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">u</div>
+            <div class="samples letter">
+              <span class="reference">u</span><span class="before">u</span
+              ><span class="after">u</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">uuu</span><span class="before">uuu</span
+              ><span class="after">uuu</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">v</div>
+            <div class="samples letter">
+              <span class="reference">v</span><span class="before">v</span
+              ><span class="after">v</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">vvv</span><span class="before">vvv</span
+              ><span class="after">vvv</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">w</div>
+            <div class="samples letter">
+              <span class="reference">w</span><span class="before">w</span
+              ><span class="after">w</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">www</span><span class="before">www</span
+              ><span class="after">www</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">x</div>
+            <div class="samples letter">
+              <span class="reference">x</span><span class="before">x</span
+              ><span class="after">x</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">xxx</span><span class="before">xxx</span
+              ><span class="after">xxx</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">y</div>
+            <div class="samples letter">
+              <span class="reference">y</span><span class="before">y</span
+              ><span class="after">y</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">yyy</span><span class="before">yyy</span
+              ><span class="after">yyy</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">z</div>
+            <div class="samples letter">
+              <span class="reference">z</span><span class="before">z</span
+              ><span class="after">z</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">zzz</span><span class="before">zzz</span
+              ><span class="after">zzz</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="uppercase">
+        <h2>Uppercase · 48 px / 14 px</h2>
+        <div class="grid">
+          <div class="tile">
+            <div class="caption">A</div>
+            <div class="samples letter">
+              <span class="reference">A</span><span class="before">A</span
+              ><span class="after">A</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">AAA</span><span class="before">AAA</span
+              ><span class="after">AAA</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">B</div>
+            <div class="samples letter">
+              <span class="reference">B</span><span class="before">B</span
+              ><span class="after">B</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">BBB</span><span class="before">BBB</span
+              ><span class="after">BBB</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">C</div>
+            <div class="samples letter">
+              <span class="reference">C</span><span class="before">C</span
+              ><span class="after">C</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">CCC</span><span class="before">CCC</span
+              ><span class="after">CCC</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">D</div>
+            <div class="samples letter">
+              <span class="reference">D</span><span class="before">D</span
+              ><span class="after">D</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">DDD</span><span class="before">DDD</span
+              ><span class="after">DDD</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">E</div>
+            <div class="samples letter">
+              <span class="reference">E</span><span class="before">E</span
+              ><span class="after">E</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">EEE</span><span class="before">EEE</span
+              ><span class="after">EEE</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">F</div>
+            <div class="samples letter">
+              <span class="reference">F</span><span class="before">F</span
+              ><span class="after">F</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">FFF</span><span class="before">FFF</span
+              ><span class="after">FFF</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">G</div>
+            <div class="samples letter">
+              <span class="reference">G</span><span class="before">G</span
+              ><span class="after">G</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">GGG</span><span class="before">GGG</span
+              ><span class="after">GGG</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">H</div>
+            <div class="samples letter">
+              <span class="reference">H</span><span class="before">H</span
+              ><span class="after">H</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">HHH</span><span class="before">HHH</span
+              ><span class="after">HHH</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">I</div>
+            <div class="samples letter">
+              <span class="reference">I</span><span class="before">I</span
+              ><span class="after">I</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">III</span><span class="before">III</span
+              ><span class="after">III</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">J</div>
+            <div class="samples letter">
+              <span class="reference">J</span><span class="before">J</span
+              ><span class="after">J</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">JJJ</span><span class="before">JJJ</span
+              ><span class="after">JJJ</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">K</div>
+            <div class="samples letter">
+              <span class="reference">K</span><span class="before">K</span
+              ><span class="after">K</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">KKK</span><span class="before">KKK</span
+              ><span class="after">KKK</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">L</div>
+            <div class="samples letter">
+              <span class="reference">L</span><span class="before">L</span
+              ><span class="after">L</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">LLL</span><span class="before">LLL</span
+              ><span class="after">LLL</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">M</div>
+            <div class="samples letter">
+              <span class="reference">M</span><span class="before">M</span
+              ><span class="after">M</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">MMM</span><span class="before">MMM</span
+              ><span class="after">MMM</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">N</div>
+            <div class="samples letter">
+              <span class="reference">N</span><span class="before">N</span
+              ><span class="after">N</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">NNN</span><span class="before">NNN</span
+              ><span class="after">NNN</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">O</div>
+            <div class="samples letter">
+              <span class="reference">O</span><span class="before">O</span
+              ><span class="after">O</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">OOO</span><span class="before">OOO</span
+              ><span class="after">OOO</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">P</div>
+            <div class="samples letter">
+              <span class="reference">P</span><span class="before">P</span
+              ><span class="after">P</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">PPP</span><span class="before">PPP</span
+              ><span class="after">PPP</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">Q</div>
+            <div class="samples letter">
+              <span class="reference">Q</span><span class="before">Q</span
+              ><span class="after">Q</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">QQQ</span><span class="before">QQQ</span
+              ><span class="after">QQQ</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">R</div>
+            <div class="samples letter">
+              <span class="reference">R</span><span class="before">R</span
+              ><span class="after">R</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">RRR</span><span class="before">RRR</span
+              ><span class="after">RRR</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">S</div>
+            <div class="samples letter">
+              <span class="reference">S</span><span class="before">S</span
+              ><span class="after">S</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">SSS</span><span class="before">SSS</span
+              ><span class="after">SSS</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">T</div>
+            <div class="samples letter">
+              <span class="reference">T</span><span class="before">T</span
+              ><span class="after">T</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">TTT</span><span class="before">TTT</span
+              ><span class="after">TTT</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">U</div>
+            <div class="samples letter">
+              <span class="reference">U</span><span class="before">U</span
+              ><span class="after">U</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">UUU</span><span class="before">UUU</span
+              ><span class="after">UUU</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">V</div>
+            <div class="samples letter">
+              <span class="reference">V</span><span class="before">V</span
+              ><span class="after">V</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">VVV</span><span class="before">VVV</span
+              ><span class="after">VVV</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">W</div>
+            <div class="samples letter">
+              <span class="reference">W</span><span class="before">W</span
+              ><span class="after">W</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">WWW</span><span class="before">WWW</span
+              ><span class="after">WWW</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">X</div>
+            <div class="samples letter">
+              <span class="reference">X</span><span class="before">X</span
+              ><span class="after">X</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">XXX</span><span class="before">XXX</span
+              ><span class="after">XXX</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">Y</div>
+            <div class="samples letter">
+              <span class="reference">Y</span><span class="before">Y</span
+              ><span class="after">Y</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">YYY</span><span class="before">YYY</span
+              ><span class="after">YYY</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">Z</div>
+            <div class="samples letter">
+              <span class="reference">Z</span><span class="before">Z</span
+              ><span class="after">Z</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">ZZZ</span><span class="before">ZZZ</span
+              ><span class="after">ZZZ</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="figures">
+        <h2>Figures · 48 px / 14 px</h2>
+        <div class="grid">
+          <div class="tile">
+            <div class="caption">0</div>
+            <div class="samples letter">
+              <span class="reference">0</span><span class="before">0</span
+              ><span class="after">0</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">000</span><span class="before">000</span
+              ><span class="after">000</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">1</div>
+            <div class="samples letter">
+              <span class="reference">1</span><span class="before">1</span
+              ><span class="after">1</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">111</span><span class="before">111</span
+              ><span class="after">111</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">2</div>
+            <div class="samples letter">
+              <span class="reference">2</span><span class="before">2</span
+              ><span class="after">2</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">222</span><span class="before">222</span
+              ><span class="after">222</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">3</div>
+            <div class="samples letter">
+              <span class="reference">3</span><span class="before">3</span
+              ><span class="after">3</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">333</span><span class="before">333</span
+              ><span class="after">333</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">4</div>
+            <div class="samples letter">
+              <span class="reference">4</span><span class="before">4</span
+              ><span class="after">4</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">444</span><span class="before">444</span
+              ><span class="after">444</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">5</div>
+            <div class="samples letter">
+              <span class="reference">5</span><span class="before">5</span
+              ><span class="after">5</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">555</span><span class="before">555</span
+              ><span class="after">555</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">6</div>
+            <div class="samples letter">
+              <span class="reference">6</span><span class="before">6</span
+              ><span class="after">6</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">666</span><span class="before">666</span
+              ><span class="after">666</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">7</div>
+            <div class="samples letter">
+              <span class="reference">7</span><span class="before">7</span
+              ><span class="after">7</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">777</span><span class="before">777</span
+              ><span class="after">777</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">8</div>
+            <div class="samples letter">
+              <span class="reference">8</span><span class="before">8</span
+              ><span class="after">8</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">888</span><span class="before">888</span
+              ><span class="after">888</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+          <div class="tile">
+            <div class="caption">9</div>
+            <div class="samples letter">
+              <span class="reference">9</span><span class="before">9</span
+              ><span class="after">9</span>
+            </div>
+            <div class="samples mini">
+              <span class="reference">999</span><span class="before">999</span
+              ><span class="after">999</span>
+            </div>
+            <div class="samples caption">
+              <span>Anthropic</span><span>0.004</span><span>0.006</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <h2>Regular Display · 48 px optical reference</h2>
+      <div class="proofrow">
+        <span class="caption">Anthropic</span
+        ><span
+          class="reference"
+          style="
+            grid-column: span 3;
+            font: 48px Reference;
+            font-variation-settings: 'opsz' 48;
+          "
+          >Hamburgefontsiv</span
+        >
+      </div>
+      <div class="proofrow">
+        <span class="caption">Altertable 0.004</span
+        ><span style="grid-column: span 3; font: 48px BeforeDisplay"
+          >Hamburgefontsiv</span
+        >
+      </div>
+      <div class="proofrow">
+        <span class="caption">Altertable 0.006</span
+        ><span style="grid-column: span 3; font: 48px AfterDisplay"
+          >Hamburgefontsiv</span
+        >
+      </div>
+      <p class="note">
+        Reference source: Anthropic’s public website, retrieved 8 November 2026.
+        No reference outlines are used by the Altertable build. A visual
+        comparison is not a production certification.
+      </p>
+      <script>
+        Promise.all([
+          document.fonts.load('400 48px Reference'),
+          document.fonts.load('48px Before'),
+          document.fonts.load('48px After'),
+          document.fonts.load('48px BeforeDisplay'),
+          document.fonts.load('48px AfterDisplay'),
+        ])
+          .then(() => {
+            document.getElementById('reference-status').textContent =
+              'Reference and Altertable fonts loaded. Compare all three columns at the same zoom.';
+          })
+          .catch(() => {
+            document.getElementById('reference-status').textContent =
+              'Reference font unavailable. The Anthropic column may show fallback text; do not use it for comparison. See README for reference setup.';
+            document.querySelectorAll('.reference').forEach(element => {
+              element.style.visibility = 'hidden';
+            });
+          });
+      </script>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+"""Render actual TTFs at reading and display sizes for visual review."""
+from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
+import uharfbuzz as hb
+
+ROOT = Path(__file__).resolve().parent
+SCALE = 2
+image = Image.new('RGB', (1440 * SCALE, 1100 * SCALE), '#f5f3ed')
+draw = ImageDraw.Draw(image)
+
+
+def line(text, y, size, optical='Text', color='#22221f'):
+    font = ImageFont.truetype(str(ROOT / 'fonts' / f'AltertableSans{optical}-Regular.ttf'), size * SCALE)
+    path = ROOT / 'fonts' / f'AltertableSans{optical}-Regular.ttf'
+    shaping_font = hb.Font(hb.Face(path.read_bytes()))
+    buffer = hb.Buffer()
+    buffer.add_str(text)
+    buffer.guess_segment_properties()
+    hb.shape(shaping_font, buffer)
+    x = 64 * SCALE
+    for info, position in zip(buffer.glyph_infos, buffer.glyph_positions):
+        # This proof uses precomposed Latin; the prototype has no substitutions.
+        draw.text((x, y * SCALE), text[info.cluster], font=font, fill=color)
+        x += position.x_advance * size * SCALE / 1000
+
+
+line('ALTERTABLE SANS / WEBSITE PROOF / 0.006', 25, 15, color='#66665e')
+line('A quieter kind of clarity.', 72, 78, 'Display')
+line('Regular Text', 200, 24)
+line('Good typography makes room for the things we need to say.', 250, 30)
+line('The shape of an idea becomes clearer when we put it into words.', 306, 22)
+line('Review the details, compare the results, and follow the questions that matter.', 350, 18)
+line('A useful interface gives every number, label, and sentence enough room to breathe.', 390, 14)
+line('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 460, 38, 'Display')
+line('abcdefghijklmnopqrstuvwxyz', 525, 44, 'Display')
+line('0123456789  $ € £  + − × ÷ =  ( ) [ ] { }', 600, 38)
+line('Hamburgefontsiv  ag eoc  rn m  Il1  O0', 675, 40)
+line('À bientôt. Über Größe? Café, façade, mañana.', 750, 32)
+line('AVATAR  WAY  To  Type  Vo  LY  “Quotes” …', 820, 32)
+line('Regular Display', 908, 22)
+line('Small details. Shared language.', 955, 60, 'Display')
+image.resize((1440, 1100), Image.Resampling.LANCZOS).save(ROOT / 'proof.png')
+print(ROOT / 'proof.png')

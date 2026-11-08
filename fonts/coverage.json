@@ -1,0 +1,145 @@
+[
+  {
+    "style": "Text",
+    "weight": 400,
+    "name": "Regular",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Display",
+    "weight": 400,
+    "name": "Regular",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 300,
+    "name": "Light",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 450,
+    "name": "Book",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 500,
+    "name": "Medium",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 600,
+    "name": "Semibold",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 700,
+    "name": "Bold",
+    "italic": false,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 300,
+    "name": "LightItalic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 400,
+    "name": "Italic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 450,
+    "name": "BookItalic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 500,
+    "name": "MediumItalic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 600,
+    "name": "SemiboldItalic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  },
+  {
+    "style": "Text",
+    "weight": 700,
+    "name": "BoldItalic",
+    "italic": true,
+    "characters": 267,
+    "glyphs": 268,
+    "seed_kerning_pairs": 107,
+    "kerning_pairs": 1267,
+    "coverage": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ £©«­®°±·»ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõö÷ùúûüýÿĆćĈĉČčĎďĚěĜĝĢģĤĥĨĩĴĵĶķĹĺĻļĽľŃńŅņŇňŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŨũŮůŴŵŶŷŸŹźŽž           ​‑–—‘’“”•… ⁠€™←↑→↓↔↗−∞≠≤≥●✓✕⨯﻿"
+  }
+]

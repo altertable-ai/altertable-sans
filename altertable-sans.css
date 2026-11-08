@@ -1,0 +1,102 @@
+/* Altertable Sans 0.006 — SIL Open Font License 1.1; see OFL.txt. */
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 450;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Book.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 300;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-LightItalic.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 450;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-BookItalic.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 500;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-MediumItalic.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 600;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-SemiboldItalic.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Altertable Sans';
+  font-style: italic;
+  font-weight: 700;
+  font-display: optional;
+  src: url('./fonts/AltertableSansText-BoldItalic.woff2')
+    format('woff2');
+}
