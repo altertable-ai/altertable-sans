@@ -21,6 +21,32 @@ def counters(font, char):
 
 
 class Readability(unittest.TestCase):
+    def test_upright_figures_have_cell_clearance(self):
+        # Tabular metrics alone do not prevent a diagonal from crossing its cell.
+        for path in (ROOT / 'fonts').glob('*.ttf'):
+            font = TTFont(path)
+            if font['OS/2'].fsSelection & 1:
+                continue
+            for char in '0123456789':
+                name = font.getBestCmap()[ord(char)]
+                glyph = font['glyf'][name]
+                advance = font['hmtx'][name][0]
+                self.assertGreaterEqual(glyph.xMin, 40, (path.name, char))
+                self.assertGreaterEqual(advance - glyph.xMax, 40, (path.name, char))
+
+    def test_text_rounds_have_small_size_clearance(self):
+        font = TTFont(ROOT / 'fonts' / 'AltertableSansText-Regular.ttf')
+        name = font.getBestCmap()[ord('o')]
+        glyph = font['glyf'][name]
+        self.assertGreaterEqual(font['hmtx'][name][0] - glyph.xMax + glyph.xMin, 96)
+
+    def test_regular_g_has_room_in_upper_counter(self):
+        font = TTFont(ROOT / 'fonts' / 'AltertableSansText-Regular.ttf')
+        holes = counters(font, 'g')
+        self.assertEqual(len(holes), 2)
+        upper = max(holes, key=lambda hole: hole.centroid.y)
+        self.assertGreaterEqual(upper.bounds[2] - upper.bounds[0], 220)
+
     def test_stem_letter_spacing_stays_balanced_across_weights(self):
         # Stem-to-stem whitespace must not collapse as strokes get heavier.
         # Compare the shipped outlines, not the builder's sidebearing table.

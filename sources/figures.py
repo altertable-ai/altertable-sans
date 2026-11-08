@@ -6,6 +6,17 @@ FIGURES = '0123456789.,'
 
 
 def add_figures(drawings, outline, stroke):
+    # Keep every figure inside its tabular cell, including heavy diagonal joins.
+    # Center the ink and compress only figures that exceed the available width.
+    # One keeps its flag/stem placement; its separate foot is added below.
+    for char in '023456789':
+        width, shape = drawings[char]
+        left, _, right, _ = shape.bounds
+        scale = min(1, (width - 80) / (right - left))
+        shape = affinity.scale(shape, xfact=scale, yfact=1, origin=(0, 0))
+        left, _, right, _ = shape.bounds
+        shape = affinity.translate(shape, xoff=(width - right - left) / 2)
+        drawings[char] = (width, shape)
     for char in FIGURES:
         width, shape = drawings[char]
         bearing = 44

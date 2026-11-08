@@ -133,7 +133,7 @@ def build(optical, weight=400, italic=False):
     style, stroke = TEXT_STYLES[weight]
     if optical == 'Display':
         stroke = 86
-    tracking = 6 if optical == 'Text' else 0
+    tracking = 12 if optical == 'Text' else 0
     alternates = ITALIC_GLYPHS if italic else {}
     drawings = {
         char: (width, outline(path, stroke, optical_weights(char, weight, italic,
@@ -198,10 +198,10 @@ def build(optical, weight=400, italic=False):
         'styleName': legacy_style,
         'typographicFamily': family,
         'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.012',
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.013',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.012',
+        'version': 'Version 0.013',
         'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',

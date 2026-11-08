@@ -4,12 +4,23 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.012 · Experimental · SIL Open Font License 1.1**
+**Version 0.013 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.012 specimen](proofs/v0.012/proof.png)
+![Altertable Sans 0.013 specimen](proofs/v0.013/proof.png)
+
+## Latest refinement
+
+Version 0.013 gently opens Text spacing, redraws the upright double-storey `g`
+and the numeral `2`, and centers the tabular figures within their cells. The
+dotted zero, barred capital I, tailed lowercase l, and proportional-figure
+features are retained. All styles have been rebuilt.
+
+See [the before/after proof](refinement-proof.html) at 12, 14, and 16px, or
+[the rendered comparison](proofs/refinement-after.png). The optional Suisse
+International benchmark uses a local reference font that is not distributed.
 
 ## Get the fonts
 

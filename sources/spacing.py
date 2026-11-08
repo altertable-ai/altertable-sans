@@ -1,6 +1,6 @@
 """Optical sidebearings and seed kerning pairs, in font units."""
 
-# Text adds six units to each advance; these are the underlying Display bearings.
+# Text adds twelve units to each advance; these are the underlying Display bearings.
 SIDEBEARINGS = {
     'A': (28, 28), 'C': (52, 48), 'G': (52, 52), 'I': (50, 50),
     'P': (55, 30), 'J': (36, 52), 'K': (55, 42), 'O': (42, 42), 'Q': (42, 38),
@@ -9,7 +9,7 @@ SIDEBEARINGS = {
     # Preserve stem/round spacing as stroke expansion changes the ink width.
     'a': (45, 45), 'b': (55, 45), 'd': (45, 55), 'h': (55, 55), 'm': (55, 55),
     'n': (55, 55), 'p': (55, 45), 'q': (45, 55), 'u': (55, 55),
-    'c': (42, 38), 'e': (42, 42), 'f': (32, 18), 'i': (68, 68),
+    'c': (42, 38), 'e': (42, 42), 'f': (32, 18), 'g': (45, 45), 'i': (68, 68),
     'j': (25, 62), 'k': (55, 38), 'l': (55, 40), 'o': (42, 42),
     'r': (55, 38), 's': (36, 36), 't': (32, 30), 'v': (24, 24),
     'w': (24, 24), 'x': (28, 28), 'y': (24, 24), 'z': (38, 38),
