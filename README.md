@@ -4,12 +4,12 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.009 · Experimental · SIL Open Font License 1.1**
+**Version 0.010 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.009 specimen](proofs/v0.009/proof.png)
+![Altertable Sans 0.010 specimen](proofs/v0.010/proof.png)
 
 ## Get the fonts
 
@@ -116,6 +116,15 @@ The [static specimen](proofs/v0.009/proof.png),
 [reading-size proof](proofs/v0.009/readability.png) are also included.
 Proofs render HarfBuzz-shaped glyphs through FreeType, including substitutions
 and mark offsets; they are not a substitute for browser/platform testing.
+
+### Brand and reading-rhythm proof
+
+Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.010 using
+real headlines, paragraphs, metrics, identifiers, and diagram labels. The proof
+includes light and dark surfaces, 12–48 px sizes, weights 400/450/500, and italics.
+Version 0.010 opens c/e apertures and s terminals, balances a sidebearings across
+weights, and separates r+n/m combinations more clearly. The comparison preserves
+the baseline Text WOFF2 faces under `proofs/v0.009/fonts/`.
 
 ## Build from source
 
