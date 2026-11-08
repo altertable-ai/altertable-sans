@@ -200,12 +200,25 @@
         font-weight: 700;
         src: url('fonts/AltertableSansText-BoldItalic.woff2?v=12') format('woff2');
       }
+
+      .figure-text { font-variant-numeric: proportional-nums; }
+      .numbers { font-variant-numeric: tabular-nums; }
+      .figure-large { font-size: clamp(24px, 4.5vw, 48px); }
+      .brand-surfaces { display: grid; gap: 24px; }
+      .brand-surface { padding: clamp(20px, 4vw, 40px); border: 1px solid var(--brand-line); background: var(--brand-paper); color: var(--brand-ink); }
+      .brand-light { --brand-paper: #fff; --brand-ink: #242922; --brand-line: #d9ddd5; }
+      .brand-dark { --brand-paper: #171c19; --brand-ink: #edf1e9; --brand-line: #414a43; }
+      .brand-surface h3 { max-width: 24ch; font-size: clamp(28px, 4vw, 48px); font-weight: 450; line-height: 1.12; letter-spacing: -.02em; margin: 24px 0; }
+      .brand-surface p { max-width: 65ch; }
+      .brand-metrics { display: flex; flex-wrap: wrap; gap: 24px; padding: 20px 0; border-block: 1px solid var(--brand-line); margin: 24px 0; }
+      .brand-metrics dt { font-size: 12px; margin-bottom: 8px; }
+      .brand-metrics dd { margin: 0; font-size: 28px; font-variant-numeric: tabular-nums; }
+      .brand-labels { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+      .brand-labels li { border: 1px solid var(--brand-line); padding: 6px 10px; font-size: 14px; }
+
     </style>
   </head>
   <body>
-<p style="padding:0 24px"><a href="figure-spacing-proof.html">Compare tabular and proportional figure spacing →</a></p>
-<p style="padding:0 24px"><a href="numeral-proof.html">Compare the corrected numeral 1 →</a></p>
-<p style="padding: 0 24px"><a href="brand-proof.html">Compare 0.009 and 0.012 on Altertable content →</a></p>
     <main>
       <header>
         <div class="meta">Altertable Sans · Website proof · 0.012</div>
@@ -224,11 +237,6 @@
           your own words.
         </p>
         <p class="meta">Experimental fonts · SIL Open Font License 1.1</p>
-        <p>
-          <a href="comparison.html"
-            >Compare spacing before and after · all weights and italics</a
-          >
-        </p>
       </header>
       <section>
         <h2>Regular Text · 14 / 16 / 20 px</h2>
@@ -285,6 +293,11 @@
           0123456789<br />$ € £ + − × ÷ = % @ &amp;<br />“Quotes” ‘apostrophes’
           … ( ) [ ] { }<br />À bientôt. Über Größe? Café, façade, mañana.
         </div>
+        <h3 class="meta">Proportional figures · running text</h3>
+        <p class="figure-text figure-large">€1,234.56 · 0.002 · 99.95%</p>
+        <p class="figure-text size16">€12,345.67 · €8,901.23 · 10,008 · 11,111 · −12.8%</p>
+        <p class="figure-text size14"><em>Revenue grew by 12.8% to €12,345.67 across 11,111 accounts.</em></p>
+        <h3 class="meta">Tabular figures · aligned columns</h3>
         <table class="numbers" aria-label="Tabular figure specimen">
           <tbody>
             <tr>
@@ -299,6 +312,8 @@
               <th scope="row">Balance</th>
               <td>€3,444.44</td>
             </tr>
+            <tr><th scope="row">Active accounts</th><td>10,008</td></tr>
+            <tr><th scope="row">Total accounts</th><td>11,111</td></tr>
           </tbody>
         </table>
       </section>
@@ -438,6 +453,23 @@
           façade, naïve. © 2026 · €123.45 →
         </p>
       </section>
+<section id="brand"><h2>Altertable in use</h2><div class="brand-surfaces"><article class="brand-surface brand-light" aria-label="Brand specimen on a light surface">
+          <p class="meta">The context lakehouse</p>
+          <h3 contenteditable="true" role="textbox" aria-label="Editable light brand headline" spellcheck="false">Keep your stack. Connect the context.</h3>
+          <p class="size20">Give agents, apps, and people the same data and definitions.</p>
+          <p class="size16" contenteditable="true" role="textbox" aria-label="Editable light brand paragraph" spellcheck="false">Query data where it lives or bring it into Altertable’s lakehouse. Define what it means once, so every team and tool shares the same context.</p>
+          <dl class="brand-metrics"><div><dt>Usage this month</dt><dd>€1,234.56</dd></div><div><dt>Availability</dt><dd>99.95%</dd></div><div><dt>Query duration</dt><dd>0.002 s</dd></div></dl>
+          <ul class="brand-labels"><li>Query in place</li><li>Shared knowledge</li><li>Access control</li></ul>
+          <p class="size14"><em>Start with one source and one question.</em></p>
+        </article><article class="brand-surface brand-dark" aria-label="Brand specimen on a dark surface">
+          <p class="meta">The context lakehouse</p>
+          <h3 contenteditable="true" role="textbox" aria-label="Editable dark brand headline" spellcheck="false">Keep your stack. Connect the context.</h3>
+          <p class="size20">Give agents, apps, and people the same data and definitions.</p>
+          <p class="size16" contenteditable="true" role="textbox" aria-label="Editable dark brand paragraph" spellcheck="false">Query data where it lives or bring it into Altertable’s lakehouse. Define what it means once, so every team and tool shares the same context.</p>
+          <dl class="brand-metrics"><div><dt>Usage this month</dt><dd>€1,234.56</dd></div><div><dt>Availability</dt><dd>99.95%</dd></div><div><dt>Query duration</dt><dd>0.002 s</dd></div></dl>
+          <ul class="brand-labels"><li>Query in place</li><li>Shared knowledge</li><li>Access control</li></ul>
+          <p class="size14"><em>Start with one source and one question.</em></p>
+        </article></div></section>
       <footer>
         <p class="links">
           <a href="fonts/AltertableSansText-Regular.ttf" download

@@ -119,34 +119,18 @@ Serve the checkout locally:
 python3 -m http.server 8768
 ```
 
-Open <http://localhost:8768/specimen.html> for editable text, reading-size samples,
-all weights, and italics. Open [comparison.html](comparison.html#revision-spacing)
-for a side-by-side 0.008/0.009 spacing proof across all Text weights and italics.
-Version 0.009 balances the side spaces of b/d/h/m/n/p/q/u as strokes change
-weight; heavy text is more open and Light is less loose. Advances change, so
-line wrapping can change. The previous WOFF2 files are preserved with the 0.008 proofs.
-The [static specimen](proofs/v0.009/proof.png),
-[Latin and mark proof](proofs/v0.009/latin.png),
-[all-style Latin proof](proofs/v0.009/all-styles.png), and
-[reading-size proof](proofs/v0.009/readability.png) are also included.
-Proofs render HarfBuzz-shaped glyphs through FreeType, including substitutions
-and mark offsets; they are not a substitute for browser/platform testing.
+Open <http://localhost:8768/specimen.html> to explore the current font:
 
-### Brand and reading-rhythm proof
+- Editable headlines and paragraphs at reading and display sizes.
+- All Text weights and italics, plus Regular Display.
+- Proportional figures in text and tabular figures in aligned columns.
+- Character coverage, accents, and combining marks.
+- Altertable brand examples on light and dark surfaces, including metrics and
+  interface labels.
 
-Open <http://localhost:8768/brand-proof.html> to compare 0.009 and 0.012 using
-real headlines, paragraphs, metrics, identifiers, and diagram labels. The proof
-includes light and dark surfaces, 12–48 px sizes, weights 400/450/500, and italics.
-Version 0.010 opens c/e apertures and s terminals, balances a sidebearings across
-weights, and separates r+n/m combinations more clearly. The comparison preserves
-the baseline Text WOFF2 faces under `proofs/v0.009/fonts/`.
-
-### Numeral alignment proof
-
-Open [numeral-proof.html](numeral-proof.html) to compare 0.010 and 0.011.
-Version 0.011 clips the diagonal-to-stem join of `1` to the 720-unit numeral
-alignment. Its baseline, advance width, and footless design are unchanged.
-The comma and other numeral outlines are unchanged.
+The [static specimen](proof.png) is also included. Proofs render
+HarfBuzz-shaped glyphs through FreeType, including substitutions and mark
+offsets; they are not a substitute for browser/platform testing.
 
 ## Build from source
 
