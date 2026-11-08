@@ -9,6 +9,19 @@ STYLES = {300: 'Light', 400: 'Regular', 500: 'Medium', 600: 'SemiBold', 700: 'Bo
 
 
 class FontMetadata(unittest.TestCase):
+    def test_license_description_on_every_platform(self):
+        expected = ('This Font Software is licensed under the SIL Open Font License, '
+                    'Version 1.1. This license is available with a FAQ at: '
+                    'https://openfontlicense.org')
+        for extension in ('ttf', 'woff2'):
+            for path in sorted((ROOT / 'fonts').glob(f'*.{extension}')):
+                with TTFont(path) as font:
+                    records = [r for r in font['name'].names if r.nameID == 13]
+                    self.assertTrue(records, path.name)
+                    for record in records:
+                        with self.subTest(font=path.name, platform=record.platformID):
+                            self.assertEqual(record.toUnicode(), expected)
+
     def test_metadata(self):
         for path in sorted((ROOT / 'fonts').glob('*.ttf')):
             with self.subTest(font=path.name), TTFont(path) as font:

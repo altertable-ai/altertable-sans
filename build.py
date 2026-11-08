@@ -227,7 +227,9 @@ def build(optical, weight=400, italic=False):
         'psName': f'AltertableSans{optical}-{filename_style}',
         'version': f'Version {VERSION}',
         'copyright': COPYRIGHT,
-        'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
+        'licenseDescription': ('This Font Software is licensed under the SIL Open Font License, '
+                               'Version 1.1. This license is available with a FAQ at: '
+                               'https://openfontlicense.org'),
         'licenseInfoURL': 'https://openfontlicense.org',
         'description': 'Original experimental proofing font. Not production-ready.',
     })

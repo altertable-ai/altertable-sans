@@ -29,7 +29,7 @@
     <key>openTypeNameDescription</key>
     <string>Original experimental proofing font. Not production-ready.</string>
     <key>openTypeNameLicense</key>
-    <string>Licensed under the SIL Open Font License, Version 1.1.</string>
+    <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org</string>
     <key>openTypeNameLicenseURL</key>
     <string>https://openfontlicense.org</string>
     <key>openTypeNameRecords</key>
@@ -140,7 +140,7 @@
         <key>platformID</key>
         <integer>1</integer>
         <key>string</key>
-        <string>Licensed under the SIL Open Font License, Version 1.1.</string>
+        <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org</string>
       </dict>
       <dict>
         <key>encodingID</key>
@@ -320,7 +320,7 @@
         <key>platformID</key>
         <integer>3</integer>
         <key>string</key>
-        <string>Licensed under the SIL Open Font License, Version 1.1.</string>
+        <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org</string>
       </dict>
       <dict>
         <key>encodingID</key>
