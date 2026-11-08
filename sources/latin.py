@@ -4,6 +4,13 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 
 LATIN = {
+    'Ʒ': (610, 'M85 690 H515 L285 390 C600 430 620 -10 300 -10 C180 -10 100 40 75 125'),
+    'ʒ': (510, 'M80 510 H425 L240 280 C510 330 520 -210 240 -210 C150 -210 90 -180 65 -125'),
+    'ʻ': (240, 'M150 740 L100 625 V550'),
+    '‚': (240, 'M140 90 V15 L90 -100'),
+    '„': (390, 'M140 90 V15 L90 -100 M290 90 V15 L240 -100'),
+    '‹': (340, 'M255 490 L90 275 L255 60'),
+    '›': (340, 'M85 490 L250 275 L85 60'),
     'Æ': (900, 'M65 0 L385 690 H825 M385 690 V0 H825 M215 270 H385 M385 355 H770'),
     'æ': (900, 'M95 425 C130 510 370 585 420 365 V0 M420 285 C160 340 80 230 90 130 C100 -55 370 -55 420 160 M420 275 H815 C815 610 420 610 420 255 C420 -30 690 -85 810 95'),
     'Œ': (1000, 'M570 690 H325 C-15 690 -15 0 325 0 H570 V690 H930 M570 355 H870 M570 0 H930'),
@@ -20,7 +27,7 @@ LATIN = {
     '¶': (620, 'M360 -130 V690 H270 C-25 690 -25 340 270 340 H360 M530 690 V-130'),
     '†': (500, 'M250 -100 V730 M55 480 H445'),
     '‡': (500, 'M250 -100 V730 M55 480 H445 M55 150 H445'),
-    '§': (610, 'M495 600 C440 785 90 730 100 535 C110 380 520 375 510 200 C500 70 350 45 230 110 M115 90 C170 -95 520 -40 510 155 C500 310 90 315 100 490 C110 620 260 645 380 580'),
+    '§': (610, 'M495 600 C440 785 90 730 100 535 C110 450 520 445 510 200 C500 190 350 165 230 130 M115 90 C170 -95 520 -40 510 155 C500 240 90 245 100 490 C110 500 260 525 380 560'),
 }
 
 
@@ -34,6 +41,7 @@ def extend_latin(drawings, outline, stroke):
         ('ł', 'l', 'M15 265 L240 440'), ('Ŧ', 'T', 'M125 355 H485'),
         ('ŧ', 't', 'M35 285 H325'), ('¢', 'c', 'M285 -100 V640'),
         ('µ', 'u', 'M100 -210 V160'),
+        ('Ǥ', 'G', 'M420 200 H715'), ('ǥ', 'g', 'M350 350 H550'),
     ]:
         width, base_shape = drawings[base]
         drawings[char] = (max(width, 35 + outline(path, stroke * .85).bounds[2]),
@@ -68,5 +76,8 @@ def extend_latin(drawings, outline, stroke):
         slash = outline('M220 -15 L530 710', stroke * .6)
         drawings[char] = (770, unary_union([upper, lower, slash]))
     width, percent = drawings['%']
-    circle = affinity.translate(outline('M200 300 C30 300 30 0 200 0 C370 0 370 300 200 300 Z', stroke), xoff=780)
+    # Match the percent sign's optical stroke correction so its third circle
+    # remains separate at Bold, rather than touching the second circle.
+    circle = affinity.translate(outline('M200 300 C30 300 30 0 200 0 C370 0 370 300 200 300 Z',
+                                        stroke, (.9,)), xoff=780)
     drawings['‰'] = (1180, unary_union([percent, circle]))

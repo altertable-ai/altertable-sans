@@ -51,7 +51,7 @@ class Readability(unittest.TestCase):
         # Stem-to-stem whitespace must not collapse as strokes get heavier.
         # Compare the shipped outlines, not the builder's sidebearing table.
         regular = TTFont(ROOT / 'fonts' / 'AltertableSansText-Regular.ttf')
-        for style in ['Light', 'Book', 'Medium', 'Semibold', 'Bold']:
+        for style in ['Light', 'Medium', 'SemiBold', 'Bold']:
             font = TTFont(ROOT / 'fonts' / f'AltertableSansText-{style}.ttf')
             for char in 'bhdmnpqu':
                 with self.subTest(style=style, char=char):
@@ -116,7 +116,7 @@ class Readability(unittest.TestCase):
                 self.assertEqual(sum(p[1] for p in shape(path, pair)) - natural, expected, f'{style}: {pair}')
 
     def test_heavy_lowercase_counters_remain_open(self):
-        for style in ['Semibold', 'Bold']:
+        for style in ['SemiBold', 'Bold']:
             font = TTFont(ROOT / 'fonts' / f'AltertableSansText-{style}.ttf')
             for char in 'ag':
                 for counter in counters(font, char):

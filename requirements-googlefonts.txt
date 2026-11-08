@@ -1,0 +1,6 @@
+# Keep readiness tooling separate from the reproducible font build environment.
+fontbakery[googlefonts]==1.1.0
+# Match the profile's data packages; newer registry releases pull incompatible metadata dependencies.
+axisregistry==0.4.16
+gflanguages==0.7.7
+glyphsets==1.1.0

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni0031.pnum" format="2">
+  <advance width="371"/>
+  <outline>
+    <contour>
+      <point x="233" y="521" type="line"/>
+      <point x="176" y="480" type="line"/>
+      <point x="103" y="569" type="line"/>
+      <point x="308" y="720" type="line"/>
+      <point x="400" y="720" type="line"/>
+      <point x="273" y="0" type="line"/>
+      <point x="141" y="0" type="line"/>
+    </contour>
+  </outline>
+</glyph>

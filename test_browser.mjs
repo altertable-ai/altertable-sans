@@ -69,7 +69,7 @@ try {
           }
           document.body.style.fontFamily = '"Proof Sans", system-ui, sans-serif';
           const measurements = [];
-          for (const weight of [300,400,450,500,600,700]) for (const style of ['normal','italic']) {
+          for (const weight of [300,400,500,600,700]) for (const style of ['normal','italic']) {
             const font = `${style} ${weight} 16px "Proof Sans"`;
             const loaded = await document.fonts.load(font);
             if (loaded.length !== 1 || loaded[0].status !== 'loaded') throw new Error(`Face failed: ${font}`);

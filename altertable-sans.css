@@ -1,4 +1,4 @@
-/* Altertable Sans 0.012 — SIL Open Font License 1.1; see OFL.txt. */
+/* Altertable Sans 1.000 — SIL Open Font License 1.1; see OFL.txt. */
 
 @font-face {
   font-family: 'Altertable Sans';
@@ -19,14 +19,6 @@
 @font-face {
   font-family: 'Altertable Sans';
   font-style: normal;
-  font-weight: 450;
-  font-display: optional;
-  src: url('./fonts/AltertableSansText-Book.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Altertable Sans';
-  font-style: normal;
   font-weight: 500;
   font-display: optional;
   src: url('./fonts/AltertableSansText-Medium.woff2') format('woff2');
@@ -37,7 +29,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: optional;
-  src: url('./fonts/AltertableSansText-Semibold.woff2') format('woff2');
+  src: url('./fonts/AltertableSansText-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -68,15 +60,6 @@
 @font-face {
   font-family: 'Altertable Sans';
   font-style: italic;
-  font-weight: 450;
-  font-display: optional;
-  src: url('./fonts/AltertableSansText-BookItalic.woff2')
-    format('woff2');
-}
-
-@font-face {
-  font-family: 'Altertable Sans';
-  font-style: italic;
   font-weight: 500;
   font-display: optional;
   src: url('./fonts/AltertableSansText-MediumItalic.woff2')
@@ -88,7 +71,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: optional;
-  src: url('./fonts/AltertableSansText-SemiboldItalic.woff2')
+  src: url('./fonts/AltertableSansText-SemiBoldItalic.woff2')
     format('woff2');
 }
 

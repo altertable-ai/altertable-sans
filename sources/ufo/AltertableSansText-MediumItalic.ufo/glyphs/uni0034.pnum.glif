@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni0034.pnum" format="2">
+  <advance width="622"/>
+  <outline>
+    <contour>
+      <point x="482" y="720" type="line"/>
+      <point x="585" y="720" type="line"/>
+      <point x="507" y="279" type="line"/>
+      <point x="578" y="279" type="line"/>
+      <point x="561" y="183" type="line"/>
+      <point x="490" y="183" type="line"/>
+      <point x="458" y="0" type="line"/>
+      <point x="364" y="0" type="line"/>
+      <point x="397" y="183" type="line"/>
+      <point x="31" y="183" type="line"/>
+    </contour>
+    <contour>
+      <point x="224" y="279" type="line"/>
+      <point x="413" y="279" type="line"/>
+      <point x="464" y="564" type="line"/>
+    </contour>
+  </outline>
+</glyph>
