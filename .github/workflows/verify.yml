@@ -106,15 +106,14 @@ jobs:
         with:
           name: font-distribution
           path: .
-      - name: Run informational Google Fonts checks
+      - name: Run Google Fonts checks
         id: fontbakery
-        continue-on-error: true
         env:
           FAMILY: ${{ matrix.family }}
           REPORT_DIR: ${{ runner.temp }}/googlefonts-report
         run: |
           mkdir -p "$REPORT_DIR"
-          fontbakery check-googlefonts --no-progress --no-colors --timeout 30 \
+          fontbakery check-googlefonts --no-progress --no-colors --timeout 30 --error-code-on FAIL \
             --html "$REPORT_DIR/report.html" \
             --json "$REPORT_DIR/report.json" \
             fonts/AltertableSans"${FAMILY}"-*.ttf
@@ -126,7 +125,7 @@ jobs:
         run: |
           {
             echo "### Google Fonts readiness: $FAMILY"
-            echo "FontBakery step: **$RESULT**. These checks are informational and do not gate releases."
+            echo "FontBakery step: **$RESULT**. FAIL, FATAL, and ERROR results fail CI and block releases; warnings remain advisory."
             echo "Download the googlefonts-readiness-$FAMILY artifact for the HTML and JSON reports."
             echo "A passing report does not imply Google Fonts acceptance; review skipped checks and onboarding requirements."
           } >> "$GITHUB_STEP_SUMMARY"
@@ -139,7 +138,7 @@ jobs:
           path: ${{ runner.temp }}/googlefonts-report/
 
   release:
-    needs: [verify, ufo]
+    needs: [verify, ufo, googlefonts]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     timeout-minutes: 10

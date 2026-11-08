@@ -180,12 +180,13 @@ The tested font distribution is also uploaded as the `font-distribution` artifac
 After the build and test matrix passes, CI runs FontBakery's `googlefonts`
 profile against the tested TTFs, separately for Text and Display. Download
 `googlefonts-readiness-Text` and `googlefonts-readiness-Display` from the workflow
-run for HTML and JSON reports. Findings are informational and do not block
-GitHub Releases. Tool installation or missing-report failures remain visible
-as CI failures. Reports are artifacts, not committed source files.
+run for HTML and JSON reports. FAIL, FATAL, and ERROR results fail CI and block
+GitHub Releases; warnings remain advisory. Reports are artifacts, not committed
+source files.
 
 To reproduce the checks locally, use a separate Python 3.12 environment so QA
-dependencies do not change the font build environment:
+dependencies do not change the font build environment. Run from this Git
+checkout with Git installed so FontBakery can locate the root license file:
 
 ```sh
 python3.12 -m venv /tmp/altertable-googlefonts-qa
@@ -193,7 +194,7 @@ python3.12 -m venv /tmp/altertable-googlefonts-qa
 mkdir -p /tmp/altertable-googlefonts-reports
 for family in Text Display; do
   /tmp/altertable-googlefonts-qa/bin/fontbakery check-googlefonts \
-    --no-progress --no-colors --timeout 30 \
+    --no-progress --no-colors --timeout 30 --error-code-on FAIL \
     --html "/tmp/altertable-googlefonts-reports/$family.html" \
     --json "/tmp/altertable-googlefonts-reports/$family.json" \
     fonts/AltertableSans"$family"-*.ttf

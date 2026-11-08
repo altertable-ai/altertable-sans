@@ -46,7 +46,7 @@ for path in fonts:
     assert font['OS/2'].fsType == 0
     assert font['OS/2'].version >= 4
     assert 'GPOS' in font
-    assert font['name'].getDebugName(13).startswith('Licensed under the SIL')
+    assert font['name'].getDebugName(13).startswith('This Font Software is licensed under the SIL')
     for char in 'HIN':
         stem = font['glyf'][cmap[ord(char)]]
         assert (stem.yMin, stem.yMax) == (0, 720), f'{char}: flat terminals miss baseline/cap height'
