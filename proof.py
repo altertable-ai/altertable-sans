@@ -1,30 +1,19 @@
 """Render actual TTFs at reading and display sizes for visual review."""
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
-import uharfbuzz as hb
+from PIL import Image
+from proof_render import draw_text
 
 ROOT = Path(__file__).resolve().parent
 SCALE = 2
 image = Image.new('RGB', (1440 * SCALE, 1100 * SCALE), '#f5f3ed')
-draw = ImageDraw.Draw(image)
 
 
 def line(text, y, size, optical='Text', color='#22221f'):
-    font = ImageFont.truetype(str(ROOT / 'fonts' / f'AltertableSans{optical}-Regular.ttf'), size * SCALE)
     path = ROOT / 'fonts' / f'AltertableSans{optical}-Regular.ttf'
-    shaping_font = hb.Font(hb.Face(path.read_bytes()))
-    buffer = hb.Buffer()
-    buffer.add_str(text)
-    buffer.guess_segment_properties()
-    hb.shape(shaping_font, buffer)
-    x = 64 * SCALE
-    for info, position in zip(buffer.glyph_infos, buffer.glyph_positions):
-        # This proof uses precomposed Latin; the prototype has no substitutions.
-        draw.text((x, y * SCALE), text[info.cluster], font=font, fill=color)
-        x += position.x_advance * size * SCALE / 1000
+    draw_text(image, path, text, 64, y + size, size, color, SCALE)
 
 
-line('ALTERTABLE SANS / WEBSITE PROOF / 0.006', 25, 15, color='#66665e')
+line('ALTERTABLE SANS / WEBSITE PROOF / 0.007', 25, 15, color='#66665e')
 line('A quieter kind of clarity.', 72, 78, 'Display')
 line('Regular Text', 200, 24)
 line('Good typography makes room for the things we need to say.', 250, 30)

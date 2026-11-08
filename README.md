@@ -4,7 +4,7 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.006 · Experimental · SIL Open Font License 1.1**
+**Version 0.007 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
@@ -78,15 +78,21 @@ Keep a fallback stack for characters outside the font's coverage.
 
 ## Character coverage
 
-Each style supports **267 Unicode characters**: printable ASCII, selected
-precomposed Latin accents, punctuation, currencies, arrows, mathematical symbols,
+Each style supports **374 Unicode characters**: printable ASCII, all letters in
+Latin-1 and Latin Extended-A, Romanian comma-below letters, capital sharp S,
+punctuation, currencies, arrows, mathematical symbols,
 and spacing characters. Numerals are tabular by default. Kerning includes
 accented variants of the supported letter pairs.
 
 See [coverage.json](fonts/coverage.json) for the exact character set in each style.
-This is partial Latin coverage, not a claim of complete language support.
-Combining marks and decomposed accented text are not yet supported; use
-precomposed characters where available.
+Coverage is not a claim of complete language support (for example, Vietnamese
+and non-Latin scripts still require fallback). Fourteen zero-width combining
+marks are supported: grave, acute, circumflex, tilde, macron, breve, dot above,
+diaeresis, ring above, double acute, caron, comma below, cedilla, and ogonek.
+OpenType `ccmp`, `mark`, and `mkmk` handle canonical compositions, dot removal
+on accented i/j, and mark attachment/stacking. Windows clipping bounds allow
+for two stacked marks while typographic line metrics remain unchanged;
+arbitrary stacks still need suitable layout space.
 
 ## Preview
 
@@ -97,7 +103,11 @@ python3 -m http.server 8768
 ```
 
 Open <http://localhost:8768/specimen.html> for editable text, reading-size samples,
-all weights, and italics. The [static specimen](proof.png) is also included.
+all weights, and italics. The [static specimen](proof.png),
+[Latin and mark proof](proofs/v0.007/latin.png), and
+[all-style Latin proof](proofs/v0.007/all-styles.png) are also included.
+Proofs render HarfBuzz-shaped glyphs through FreeType, including substitutions
+and mark offsets; they are not a substitute for browser/platform testing.
 
 ## Build from source
 
@@ -109,7 +119,9 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 python build.py
 python verify.py
+python -m unittest test_latin -v
 python proof.py
+python proof_latin.py
 ```
 
 On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in
@@ -122,8 +134,9 @@ verification, and proof renderer on each push and pull request.
 
 Editable drawings live in [sources/](sources/): `glyphs.py` defines the base
 letterforms, `italics.py` the italic alternates, `spacing.py` sidebearings and
-kerning, and `symbols.py` additional symbols. The builder expands these
-centerlines into flattened outlines. This is an experimental construction
+kerning, and `symbols.py` additional symbols. `latin.py` supplies additional Latin
+letters; `marks.py` constructs accents and OpenType attachment rules. The builder
+expands these centerlines into flattened outlines. This is an experimental construction
 method, not a finished set of Bézier masters.
 
 ## Contributing
@@ -136,8 +149,8 @@ For drawing or spacing changes, edit the sources, rebuild the fonts, run
 `verify.py`, and include before-and-after specimens at both text and display
 sizes. Include regenerated font files and the coverage manifest with your change.
 
-Current priorities are optical refinement, broader Latin coverage, combining-mark
-positioning, improved curve outlines, hinting, and cross-platform rendering.
+Current priorities are optical refinement, broader Latin coverage, further
+language-specific refinement, improved curve outlines, hinting, and cross-platform rendering.
 The weights and italics still need individual refinement; passing the automated
 checks does not establish production readiness.
 

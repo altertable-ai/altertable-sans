@@ -16,7 +16,9 @@ from shapely.geometry.polygon import orient
 from shapely.ops import unary_union
 
 from sources.italics import ITALIC_GLYPHS
-from sources.glyphs import GLYPHS, EXTRA, ACCENTS, PATH_WEIGHTS
+from sources.latin import LATIN, extend_latin
+from sources.marks import add_accents, features as mark_features
+from sources.glyphs import GLYPHS, EXTRA, PATH_WEIGHTS
 from sources.spacing import SIDEBEARINGS, KERNING
 from sources.symbols import SYMBOLS, SYMBOL_WEIGHTS, SPACE_WIDTHS
 
@@ -135,7 +137,7 @@ def build(optical, weight=400, italic=False):
     drawings = {
         char: (width, outline(path, stroke, () if char in alternates else (PATH_WEIGHTS | SYMBOL_WEIGHTS).get(char, ()),
                               max(0, (stroke - 90) * 1.1) if char == 'g' and not italic else 0))
-        for char, (width, path) in (GLYPHS | EXTRA | SYMBOLS | alternates).items()
+        for char, (width, path) in (GLYPHS | EXTRA | SYMBOLS | LATIN | alternates).items()
     }
     for char in 'VWvw':
         width, shape = drawings[char]
@@ -152,20 +154,9 @@ def build(optical, weight=400, italic=False):
         drawings[char] = drawings['-']
     for char, radius in (('•', 55), ('●', 115)):
         drawings[char] = (350, Point(175, 300).buffer(radius, quad_segs=32))
-    for code in range(0x00C0, 0x0180):
-        char = chr(code)
-        parts = unicodedata.normalize('NFD', char)
-        if len(parts) != 2 or parts[0] not in drawings or parts[1] not in ACCENTS:
-            continue
-        base, accent = parts
-        width, shape = drawings[base]
-        if base == 'i':
-            shape = outline('M125 0 V510', stroke)
-            shape = affinity.translate(shape, xoff=SIDEBEARINGS['i'][0] - shape.bounds[0])
-        mark = outline(ACCENTS[accent], stroke * 0.78)
-        height = 185 if base.isupper() and accent != '\u0327' else 0
-        mark = affinity.translate(mark, xoff=width / 2, yoff=height)
-        drawings[char] = (width, unary_union([shape, mark]))
+    extend_latin(drawings, outline, stroke)
+    compositions = add_accents(drawings, outline, stroke)
+    attachment_features = mark_features(drawings, compositions, italic, tracking, glyph_name)
 
     if italic:
         slope = math.tan(math.radians(10))
@@ -197,17 +188,18 @@ def build(optical, weight=400, italic=False):
         'styleName': legacy_style,
         'typographicFamily': family,
         'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.006',
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.007',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.006',
+        'version': 'Version 0.007',
         'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
         'description': 'Original experimental proofing font. Not production-ready.',
     })
+    # Win clipping bounds include two stacked marks; typographic line metrics stay fixed.
     fb.setupOS2(sTypoAscender=1000, sTypoDescender=-280, sTypoLineGap=0,
-                usWinAscent=1000, usWinDescent=280, sxHeight=540, sCapHeight=720,
+                usWinAscent=1250, usWinDescent=750, sxHeight=540, sCapHeight=720,
                 version=4,
                 usWeightClass=weight, usWidthClass=5, fsType=0,
                 fsSelection=(0x81 | (0x20 if weight == 700 else 0)) if italic else (0xA0 if weight == 700 else (0xC0 if weight == 400 else 0x80)))
@@ -224,8 +216,8 @@ def build(optical, weight=400, italic=False):
             for rchar in groups[right]:
                 rules.append(f'pos {glyph_name(lchar)} {glyph_name(rchar)} {value};')
     addOpenTypeFeaturesFromString(fb.font, 'languagesystem DFLT dflt;\n'
-                                 'languagesystem latn dflt;\nfeature kern {\n'
-                                 + '\n'.join(rules) + '\n} kern;')
+                                 'languagesystem latn dflt;\nfeature kern {\nlookupflag IgnoreMarks;\n'
+                                 + '\n'.join(rules) + '\n} kern;\n' + attachment_features)
     fb.font.recalcTimestamp = False
     fb.font['head'].macStyle = (1 if weight == 700 else 0) | (2 if italic else 0)
     fb.font['head'].created = EPOCH

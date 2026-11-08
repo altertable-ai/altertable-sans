@@ -205,7 +205,7 @@
   <body>
     <main>
       <header>
-        <div class="meta">Altertable Sans · Website proof · 0.006</div>
+        <div class="meta">Altertable Sans · Website proof · 0.007</div>
         <h1
           class="sample"
           contenteditable="true"
@@ -300,14 +300,32 @@
         </table>
       </section>
       <section>
+        <h2>Latin coverage and combining marks</h2>
+        <div class="sample large" contenteditable="true" spellcheck="false">
+          ď ť ľ Ľ · Ģ ģ Ķ ķ Ļ ļ Ņ ņ · Ș ș Ț ț<br />
+          Æ æ Œ œ Ø ø Ð ð Þ þ Ł ł Ŋ ŋ ẞ<br />
+          Ā ā Ą ą Ę ę Ğ ğ İ ı Ő ő Ű ű<br />
+          Cœur, œuvre, smørrebrød. Łódź. İstanbul. Știință.<br />
+          Café naïve Ångström<br />
+          Cafe&#x301; nai&#x308;ve A&#x30A;ngstro&#x308;m<br />
+          q&#x301; x&#x308;&#x301; i&#x30B; j&#x30B;
+        </div>
+        <p class="intro">
+          The two matching sentences use precomposed and decomposed accents.
+          The last line exercises mark attachment, stacking, and dot removal.
+          Fourteen combining marks are supported; other scripts still need fallback.
+        </p>
+      </section>
+      <section>
         <h2>What this proof does and does not contain</h2>
         <p class="intro">
-          267 encoded characters, tabular default numerals, and an initial
+          374 encoded characters, tabular default numerals, and an initial
           kerning pass. Text has heavier strokes and more spacing than Display.
-          These are two static trials, not a finished optical-size system.
+          The family has six Text weights with italics and a separate Regular Display.
+          These are static fonts, not a finished optical-size system.
         </p>
         <p class="intro">
-          Variable axes, complete language coverage, combining-mark positioning,
+          Variable axes, complete language coverage,
           ligatures, and hinting are still to come. The outlines use flattened
           stroke geometry and need further optical correction and curve editing
           before release.
