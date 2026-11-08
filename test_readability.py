@@ -21,6 +21,24 @@ def counters(font, char):
 
 
 class Readability(unittest.TestCase):
+    def test_stem_letter_spacing_stays_balanced_across_weights(self):
+        # Stem-to-stem whitespace must not collapse as strokes get heavier.
+        # Compare the shipped outlines, not the builder's sidebearing table.
+        regular = TTFont(ROOT / 'fonts' / 'AltertableSansText-Regular.ttf')
+        for style in ['Light', 'Book', 'Medium', 'Semibold', 'Bold']:
+            font = TTFont(ROOT / 'fonts' / f'AltertableSansText-{style}.ttf')
+            for char in 'bhdmnpqu':
+                with self.subTest(style=style, char=char):
+                    spaces = []
+                    for face in (regular, font):
+                        name = face.getBestCmap()[ord(char)]
+                        glyph = face['glyf'][name]
+                        advance = face['hmtx'][name][0]
+                        spaces.append((glyph.xMin, advance - glyph.xMax))
+                    for baseline, actual in zip(*spaces):
+                        self.assertGreaterEqual(actual, baseline * .85)
+                        self.assertLessEqual(actual, baseline * 1.15)
+
     def test_identifiers_have_structural_distinctions(self):
         for path in (ROOT / 'fonts').glob('*.ttf'):
             f = TTFont(path); cmap = f.getBestCmap()

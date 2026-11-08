@@ -5,7 +5,7 @@ from PIL import Image
 from proof_render import draw_text
 
 ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'proofs' / 'v0.008'
+OUT = ROOT / 'proofs' / 'v0.009'
 OUT.mkdir(parents=True, exist_ok=True)
 SCALE = 2
 regular = ROOT / 'fonts' / 'AltertableSansText-Regular.ttf'
@@ -28,7 +28,7 @@ image = Image.new('RGB', (1500*SCALE, 1540*SCALE), '#f5f3ed')
 y = 38
 for style in ['Regular', 'Bold', 'Italic', 'BoldItalic']:
     path = ROOT / 'fonts' / f'AltertableSansText-{style}.ttf'
-    line(image, regular, '0.008 / ' + style + ' / Latin and mark proof', y, 18, '#66665e'); y += 47
+    line(image, regular, '0.009 / ' + style + ' / Latin and mark proof', y, 18, '#66665e'); y += 47
     for sample in samples:
         line(image, path, sample, y, 30); y += 40
     line(image, path, samples[4], y, 13); y += 44

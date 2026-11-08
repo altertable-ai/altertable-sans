@@ -76,6 +76,39 @@ try {
         results.push({ engine:name, width, colorScheme, ...metrics });
         await page.close();
       }
+      // Review the actual repository specimens as well as the interface fixture.
+      for (const width of [1280, 390]) {
+        const review = await browser.newPage({ viewport:{width,height:1000} });
+        await review.goto(url.replace('browser-proof.html', 'comparison.html'));
+        await review.waitForFunction(() => document.querySelector('#revision-status')
+          .textContent.startsWith('Both revisions loaded'));
+        assert.equal(await review.locator('.revision-pair').count(), 12);
+        const spacing = await review.evaluate(() => {
+          const context = document.createElement('canvas').getContext('2d');
+          const measurements = [];
+          for (const weight of [300,400,450,500,600,700]) for (const style of ['normal','italic']) {
+            const widths = ['Revision Before','Revision After'].map(family => {
+              context.font = `${style} ${weight} 16px "${family}"`;
+              return context.measureText('minimum rhythm').width;
+            });
+            measurements.push({weight,style,before:widths[0],after:widths[1]});
+          }
+          return {measurements,overflow:document.documentElement.scrollWidth>innerWidth};
+        });
+        assert.equal(spacing.overflow, false, `${name}/${width}: comparison overflow`);
+        for (const m of spacing.measurements) {
+          if (m.weight === 300) assert.ok(m.after < m.before, `${name}: Light spacing unchanged`);
+          else if (m.weight === 400) assert.ok(Math.abs(m.after-m.before)<.1, `${name}: Regular spacing changed`);
+          else assert.ok(m.after > m.before, `${name}: heavy spacing unchanged`);
+        }
+        await review.screenshot({path:path.join(out,`${name}-${width}-comparison.png`),fullPage:true});
+        await review.goto(url.replace('browser-proof.html', 'specimen.html'));
+        await review.evaluate(() => document.fonts.ready);
+        assert.equal(await review.evaluate(() => document.documentElement.scrollWidth>innerWidth),
+          false, `${name}/${width}: specimen overflow`);
+        await review.screenshot({path:path.join(out,`${name}-${width}-specimen.png`),fullPage:true});
+        await review.close();
+      }
       // A failed download must leave usable fallback text and controls.
       const fallback = await browser.newPage({ viewport:{width:390,height:900} });
       await fallback.route('**/*.woff2', route => route.abort());

@@ -4,12 +4,12 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.008 · Experimental · SIL Open Font License 1.1**
+**Version 0.009 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.008 specimen](proofs/v0.008/proof.png)
+![Altertable Sans 0.009 specimen](proofs/v0.009/proof.png)
 
 ## Get the fonts
 
@@ -105,10 +105,15 @@ python3 -m http.server 8768
 ```
 
 Open <http://localhost:8768/specimen.html> for editable text, reading-size samples,
-all weights, and italics. The [static specimen](proofs/v0.008/proof.png),
-[Latin and mark proof](proofs/v0.008/latin.png),
-[all-style Latin proof](proofs/v0.008/all-styles.png), and
-[reading-size proof](proofs/v0.008/readability.png) are also included.
+all weights, and italics. Open [comparison.html](comparison.html#revision-spacing)
+for a side-by-side 0.008/0.009 spacing proof across all Text weights and italics.
+Version 0.009 balances the side spaces of b/d/h/m/n/p/q/u as strokes change
+weight; heavy text is more open and Light is less loose. Advances change, so
+line wrapping can change. The previous WOFF2 files are preserved with the 0.008 proofs.
+The [static specimen](proofs/v0.009/proof.png),
+[Latin and mark proof](proofs/v0.009/latin.png),
+[all-style Latin proof](proofs/v0.009/all-styles.png), and
+[reading-size proof](proofs/v0.009/readability.png) are also included.
 Proofs render HarfBuzz-shaped glyphs through FreeType, including substitutions
 and mark offsets; they are not a substitute for browser/platform testing.
 
@@ -143,7 +148,7 @@ The tested font distribution is also uploaded as the `font-distribution` artifac
 
 ### Releases
 
-Push a version tag matching the font metadata (for example, `v0.008`) to publish
+Push a version tag matching the font metadata (for example, `v0.009`) to publish
 a GitHub Release. The tag runs the same build and tests on all three operating
 systems; publication only proceeds when the entire matrix passes. A mismatched
 tag fails verification. The release includes a ZIP of the tested TTF/WOFF2 fonts,
@@ -153,11 +158,11 @@ After updating the version in `build.py`, rebuilding the fonts, and committing
 the release changes:
 
 ```sh
-git tag -a v0.008 -m "Altertable Sans 0.008"
-git push origin v0.008
+git tag -a v0.009 -m "Altertable Sans 0.009"
+git push origin v0.009
 ```
 
-Use the new version in place of `v0.008` for subsequent releases. Branch pushes,
+Use the new version in place of `v0.009` for subsequent releases. Branch pushes,
 pull requests, and manual workflow runs build and test without publishing.
 
 Run the browser checks locally with:
