@@ -9,7 +9,7 @@ import uharfbuzz as hb
 from shapely.geometry import LineString, Polygon
 from shapely.ops import unary_union
 from shapely.affinity import translate
-from sources.spacing import KERNING
+from sources.spacing import kerning_for_style
 import string
 import json
 
@@ -35,6 +35,7 @@ for path in fonts:
     font = TTFont(path)
     cmap = font.getBestCmap()
     italic = bool(font['OS/2'].fsSelection & 1)
+    kerning = kerning_for_style(font['OS/2'].usWeightClass, italic)
     assert bool(font['head'].macStyle & 2) == italic
     assert font['post'].italicAngle == (-10 if italic else 0)
     assert font['hhea'].caretSlopeRun == (176 if italic else 0)
@@ -86,8 +87,8 @@ for path in fonts:
         print(f'PASS {path.name}: g has two counters and a {waist:.1f}-unit open waist')
     if path.suffix == '.ttf':
         shaping_font = hb.Font(hb.Face(path.read_bytes()))
-        shapes = {c: glyph_geometry(font, c)[0] for c in set(''.join(KERNING))}
-        for pair, adjustment in KERNING.items():
+        shapes = {c: glyph_geometry(font, c)[0] for c in set(''.join(kerning))}
+        for pair, adjustment in kerning.items():
             left, right = pair
             left_advance = font['hmtx'][cmap[ord(left)]][0]
             right_advance = font['hmtx'][cmap[ord(right)]][0]
@@ -99,7 +100,7 @@ for path in fonts:
             assert actual == left_advance + right_advance + adjustment, f'{pair}: incorrect kerning'
             overlap = shapes[left].intersection(translate(shapes[right], xoff=left_advance + adjustment))
             assert overlap.area < 0.5, f'{pair}: kerned outlines collide'
-        for pair, adjustment in {'ÁV': -60, 'Tó': -55, 'Yé': -50}.items():
+        for pair, adjustment in {'ÁV': kerning['AV'], 'Tó': kerning['To'], 'Yé': kerning['Ye']}.items():
             buffer = hb.Buffer()
             buffer.add_str(pair)
             buffer.guess_segment_properties()
@@ -107,7 +108,7 @@ for path in fonts:
             actual = sum(position.x_advance for position in buffer.glyph_positions)
             expected = sum(font['hmtx'][cmap[ord(c)]][0] for c in pair) + adjustment
             assert actual == expected, f'{pair}: accented kerning was not propagated'
-        print(f'PASS {len(KERNING)} seed pairs: shaping values and no outline collisions')
+        print(f'PASS {len(kerning)} seed pairs: shaping values and no outline collisions')
     print(f'PASS {path.name}: coverage, metrics, contours, licensing, kerning table')
 
 before = {p.name: sha256(p.read_bytes()).hexdigest() for p in fonts}

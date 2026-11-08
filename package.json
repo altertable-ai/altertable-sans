@@ -1,0 +1,6 @@
+{
+  "name": "altertable-sans-browser-proof",
+  "private": true,
+  "scripts": { "test:browser": "node test_browser.mjs" },
+  "devDependencies": { "playwright": "1.65.0" }
+}

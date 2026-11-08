@@ -2,12 +2,12 @@
 
 # Text adds six units to each advance; these are the underlying Display bearings.
 SIDEBEARINGS = {
-    'A': (28, 28), 'C': (52, 48), 'G': (52, 52), 'I': (78, 78),
+    'A': (28, 28), 'C': (52, 48), 'G': (52, 52), 'I': (50, 50),
     'P': (55, 30), 'J': (36, 52), 'K': (55, 42), 'O': (42, 42), 'Q': (42, 38),
     'R': (55, 42), 'S': (40, 40), 'V': (26, 26), 'W': (26, 26),
     'X': (32, 32), 'Y': (25, 25), 'Z': (44, 44),
     'c': (42, 38), 'e': (42, 42), 'f': (32, 18), 'i': (68, 68),
-    'j': (25, 62), 'k': (55, 38), 'l': (68, 68), 'o': (42, 42),
+    'j': (25, 62), 'k': (55, 38), 'l': (55, 40), 'o': (42, 42),
     'r': (55, 30), 's': (36, 36), 't': (32, 30), 'v': (24, 24),
     'w': (24, 24), 'x': (28, 28), 'y': (24, 24), 'z': (38, 38),
 }
@@ -41,3 +41,27 @@ KERNING = {
     'A’': -35, 'A”': -35, 'L’': -35, 'L”': -35,
     '‘A': -30, '“A': -30,
 }
+
+
+def optical_weights(char, weight, italic, defaults):
+    """Ease heavy a/g bowls independently of their stems and connecting strokes."""
+    amount = max(0, weight - 400) / 300
+    if not italic and char == 'a':
+        return (1, 1 - .14 * amount)
+    if not italic and char == 'g':
+        return (1 - .14 * amount, 1, 1 - .1 * amount, 1 - .30 * amount)
+    return defaults
+
+
+def kerning_for_style(weight, italic):
+    """Reserve more crown clearance for heavy/italic f and ease heavy diagonals."""
+    pairs = dict(KERNING)
+    amount = max(0, weight - 400) / 300
+    if italic:
+        pairs.update(ff=round(24 + 8*amount), fi=round(18 + 6*amount), fl=round(16 + 6*amount))
+        pairs.update({'r.': -16, 'r,': -16})
+    else:
+        pairs.update(ff=round(12 + 12*amount), fi=round(10 + 10*amount), fl=round(10 + 8*amount))
+    for pair in ['AV', 'AW', 'AY', 'AT', 'VA', 'WA', 'YA', 'TA']:
+        pairs[pair] += round(8*amount)
+    return pairs

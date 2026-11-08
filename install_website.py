@@ -24,7 +24,7 @@ for entry in json.loads((ROOT / 'fonts' / 'coverage.json').read_text()):
     source = ROOT / 'fonts' / f'AltertableSansText-{style}.woff2'
     font = TTFont(source)
     assert font['OS/2'].usWeightClass == weight
-    assert font['name'].getDebugName(5) == 'Version 0.007'
+    assert font['name'].getDebugName(5) == 'Version 0.008'
     assert ord('©') in font.getBestCmap()
     sources.append(source)
 

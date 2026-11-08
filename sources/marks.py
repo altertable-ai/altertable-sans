@@ -3,6 +3,7 @@ import math
 import unicodedata
 from shapely import affinity
 from shapely.ops import unary_union
+from shapely.geometry import LineString, box
 from sources.glyphs import ACCENTS
 
 MARK_PATHS = ACCENTS | {
@@ -20,14 +21,17 @@ def mark_class(char):
     return {'\u0326': 'bottom', '\u0327': 'cedilla', '\u0328': 'ogonek'}.get(char, 'top')
 
 
-def normalized_mark(path, outline, stroke, below=False):
+def normalized_mark(path, outline, stroke, below=False, attached=False):
     form = outline(path, stroke * .62)
     x0, y0, x1, y1 = form.bounds
     # Compact accents retain clearance above capitals inside the existing metrics.
     if y1 - y0 > 160:
         form = affinity.scale(form, yfact=160 / (y1-y0), origin=(0, 0))
     x0, y0, x1, y1 = form.bounds
-    return affinity.translate(form, xoff=-(x0+x1)/2, yoff=-y1 if below else -y0)
+    center = (x0+x1)/2
+    if attached:
+        center = form.intersection(LineString([(-1000, y1-5), (1000, y1-5)])).centroid.x
+    return affinity.translate(form, xoff=-center, yoff=-y1 if below else -y0)
 
 
 def base_anchor(width, form, kind):
@@ -35,12 +39,16 @@ def base_anchor(width, form, kind):
     if kind == 'top':
         return ((x0+x1)/2, y1+GAP)
     if kind == 'ogonek':
-        return (x1-25, y0+12)
+        # Attach to the lower-right ink, not the empty corner of its bounding box.
+        y = y0 + 25
+        section = form.intersection(LineString([(x0-1, y), (x1+1, y)]))
+        return (section.bounds[2]-15, y)
     return ((x0+x1)/2, y0-GAP if kind == 'bottom' else y0+12)
 
 
 def add_accents(drawings, outline, stroke):
-    marks = {c: normalized_mark(p, outline, stroke, mark_class(c) != 'top')
+    marks = {c: normalized_mark(p, outline, stroke, mark_class(c) != 'top',
+                                mark_class(c) in ('cedilla', 'ogonek'))
              for c, p in MARK_PATHS.items()}
     compositions = []
     for code in [*range(0xC0, 0x180), *range(0x218, 0x21C)]:
@@ -58,8 +66,9 @@ def add_accents(drawings, outline, stroke):
         if char in 'ďťľĽ':
             # Slovak/Czech use a raised comma to the right of these stems.
             mark = normalized_mark('M20 160 V95 L-20 15', outline, stroke)
-            x = form.bounds[2] + GAP - mark.bounds[0]
             y = form.bounds[3] - mark.bounds[3]
+            section = form.intersection(box(-1000, y, 2000, form.bounds[3]+1))
+            x = section.bounds[2] + GAP - mark.bounds[0]
             width = max(width, x + mark.bounds[2] + 35)
         elif char in 'ĢģĶķĻļŅņŖŗ':
             mark = marks['\u0326']
@@ -70,6 +79,11 @@ def add_accents(drawings, outline, stroke):
                 x, y = base_anchor(width, form, 'bottom')
         drawings[char] = (round(width), unary_union([form, affinity.translate(mark, xoff=x, yoff=y)]))
         compositions.append((base, accent, char))
+        if char == 'į':
+            dotless = drawings['ı'][1]
+            x, y = base_anchor(width, dotless, kind)
+            drawings['į.nodot'] = (round(width), unary_union([
+                dotless, affinity.translate(mark, xoff=x, yoff=y)]))
     for char, form in marks.items():
         drawings[char] = (0, form)
     return compositions
@@ -86,13 +100,16 @@ def features(drawings, compositions, italic, tracking, name):
     lines = ['@Above = [' + ' '.join(map(name, above)) + '];', 'feature ccmp {']
     for base, accent, composed in compositions:
         lines.append(f'sub {name(base)} {name(accent)} by {name(composed)};')
-    lines.extend([f"sub {name('i')}' @Above by {name('ı')};",
-                  f"sub {name('j')}' @Above by {name('ȷ')};", '} ccmp;'])
+    lines.extend(['lookup RemoveSoftDot {', 'lookupflag UseMarkFilteringSet @Above;',
+                  f"sub {name('i')}' @Above by {name('ı')};",
+                  f"sub {name('j')}' @Above by {name('ȷ')};",
+                  f"sub {name('į')}' @Above by {name('į.nodot')};",
+                  '} RemoveSoftDot;', '} ccmp;'])
     for char in MARK_PATHS:
         lines.append(f'markClass {name(char)} {anchor(0, 0)} @MC_{mark_class(char)};')
     lines.append('feature mark {')
     for char, (width, form) in drawings.items():
-        if not unicodedata.category(char).startswith('L') or form.is_empty:
+        if not unicodedata.category(char[0]).startswith('L') or form.is_empty:
             continue
         anchors = ' '.join(f'{anchor(*base_anchor(width, form, kind))} mark @MC_{kind}'
                            for kind in ['top', 'bottom', 'cedilla', 'ogonek'])

@@ -13,7 +13,7 @@ def line(text, y, size, optical='Text', color='#22221f'):
     draw_text(image, path, text, 64, y + size, size, color, SCALE)
 
 
-line('ALTERTABLE SANS / WEBSITE PROOF / 0.007', 25, 15, color='#66665e')
+line('ALTERTABLE SANS / WEBSITE PROOF / 0.008', 25, 15, color='#66665e')
 line('A quieter kind of clarity.', 72, 78, 'Display')
 line('Regular Text', 200, 24)
 line('Good typography makes room for the things we need to say.', 250, 30)
@@ -28,5 +28,9 @@ line('À bientôt. Über Größe? Café, façade, mañana.', 750, 32)
 line('AVATAR  WAY  To  Type  Vo  LY  “Quotes” …', 820, 32)
 line('Regular Display', 908, 22)
 line('Small details. Shared language.', 955, 60, 'Display')
-image.resize((1440, 1100), Image.Resampling.LANCZOS).save(ROOT / 'proof.png')
+rendered = image.resize((1440, 1100), Image.Resampling.LANCZOS)
+rendered.save(ROOT / 'proof.png')
+versioned = ROOT / 'proofs' / 'v0.008'
+versioned.mkdir(parents=True, exist_ok=True)
+rendered.save(versioned / 'proof.png')
 print(ROOT / 'proof.png')

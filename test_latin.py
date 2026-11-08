@@ -7,6 +7,7 @@ from pathlib import Path
 
 from fontTools.ttLib import TTFont
 import uharfbuzz as hb
+from shapely.geometry import Polygon, LineString
 
 ROOT = Path(__file__).resolve().parent
 MARKS = '\u0300\u0301\u0302\u0303\u0304\u0306\u0307\u0308\u030a\u030b\u030c\u0326\u0327\u0328'
@@ -32,6 +33,16 @@ def shape(path, text, features=None):
     hb.shape(font, buf, features)
     return [(i.codepoint, p.x_advance, p.x_offset, p.y_offset)
             for i, p in zip(buf.glyph_infos, buf.glyph_positions)]
+
+
+def contours(font, glyph_name):
+    glyph = font['glyf'][glyph_name]
+    coordinates, ends, _ = glyph.getCoordinates(font['glyf'])
+    polygons, start = [], 0
+    for end in ends:
+        polygons.append(Polygon(coordinates[start:end + 1]))
+        start = end + 1
+    return polygons
 
 
 class LatinRegression(unittest.TestCase):
@@ -86,6 +97,38 @@ class LatinRegression(unittest.TestCase):
                     glyph = f['glyf'][order[gid]]
                     self.assertLessEqual(glyph.yMax + dy, f['OS/2'].usWinAscent, f'{path.name}: {text}')
                     self.assertGreaterEqual(glyph.yMin + dy, -f['OS/2'].usWinDescent, f'{path.name}: {text}')
+
+    def test_ogoneks_are_attached(self):
+        for path in self.paths:
+            f = TTFont(path); cmap = f.getBestCmap()
+            for char in 'ĄąĘęĮįŲų':
+                base = unicodedata.normalize('NFD', char)[0]
+                self.assertEqual(f['glyf'][cmap[ord(char)]].numberOfContours,
+                                 f['glyf'][cmap[ord(base)]].numberOfContours,
+                                 f'{path.name}: detached {char}')
+
+    def test_caron_follows_upper_stem(self):
+        for path in self.paths:
+            f = TTFont(path); cmap = f.getBestCmap()
+            for char in 'Ľľ':
+                outer = [p for p in contours(f, cmap[ord(char)]) if not p.exterior.is_ccw]
+                base, accent = sorted(outer, key=lambda p: p.area, reverse=True)
+                section = base.intersection(LineString([(-1000, accent.centroid.y), (2000, accent.centroid.y)]))
+                self.assertLess(accent.bounds[0] - section.bounds[2], 100, f'{path.name}: {char}')
+
+    def test_eth_has_only_one_counter(self):
+        for path in self.paths:
+            f = TTFont(path)
+            holes = [p for p in contours(f, f.getBestCmap()[ord('ð')]) if p.exterior.is_ccw]
+            self.assertEqual(len(holes), 1, path.name)
+
+    def test_soft_dots_through_below_marks(self):
+        for path in self.paths:
+            f = TTFont(path)
+            for text in ['i\u0326\u030b', 'j\u0326\u0301', 'į\u0301', 'į\u0307\u0301']:
+                result = shape(path, text)
+                base = f['glyf'][f.getGlyphName(result[0][0])]
+                self.assertLess(base.yMax, 600, f'{path.name}: retained intrinsic dot in {text}')
 
     def test_caron_separation(self):
         for path in self.paths:

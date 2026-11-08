@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Altertable Sans — interface proof</title>
+<link rel="stylesheet" href="altertable-sans.css">
+<style>
+* { box-sizing: border-box; }
+:root { color-scheme: light dark; --paper:#faf9f6; --card:white; --ink:#252523; --muted:#62625d; --line:#d8d8d1; }
+@media(prefers-color-scheme:dark) { :root { --paper:#171716; --card:#232321; --ink:#f0f0e9; --muted:#b7b7ad; --line:#48483f; } }
+body { margin:0; padding:24px; background:var(--paper); color:var(--ink); font:14px/1.5 'Altertable Sans',system-ui,sans-serif; font-synthesis:none; }
+main { max-width:1120px; margin:auto; }
+header { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+h1 { font-size:28px; line-height:1.3; margin:0; font-weight:600; }
+h2 { font-size:16px; margin:0 0 12px; font-weight:600; }
+p { margin:8px 0; }
+.muted { color:var(--muted); }
+section { border:1px solid var(--line); background:var(--card); padding:20px; border-radius:8px; margin-top:18px; min-width:0; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+button,input { font:inherit; border:1px solid var(--line); border-radius:5px; padding:8px 12px; background:var(--card); color:inherit; min-width:0; }
+button { font-weight:500; cursor:pointer; }
+label { display:grid; gap:5px; font-size:13px; margin-top:12px; }
+.metric { font-size:32px; font-weight:600; font-variant-numeric:tabular-nums; }
+.tag { display:inline-block; font-size:12px; padding:3px 7px; border:1px solid var(--line); border-radius:4px; }
+table { border-collapse:collapse; width:100%; font-size:13px; }
+th,td { padding:9px 8px; border-bottom:1px solid var(--line); text-align:left; }
+th { font-weight:500; color:var(--muted); }
+.number { text-align:right; font-variant-numeric:tabular-nums; }
+.scroll { overflow-x:auto; }
+.weight { display:grid; grid-template-columns:65px 1fr; gap:10px; padding:6px 0; border-bottom:1px solid var(--line); }
+.sample { overflow-wrap:anywhere; }
+@media(max-width:600px) { body { padding:14px; } .grid { grid-template-columns:1fr; gap:0; } section { padding:14px; } h1 { font-size:24px; } }
+</style>
+</head>
+<body><main>
+<header><div><p class="muted">Altertable Sans / interface proof / 0.008</p><h1>Workspace overview</h1></div><button data-fit>New insight</button></header>
+<div class="grid"><section><h2>Monthly revenue</h2><div class="metric">€12,345.67</div><p class="muted">+12.5% compared with the previous month</p><p><span class="tag" data-fit>Updated just now</span></p></section>
+<section><h2>Dataset settings</h2><label>Display name<input value="Cœur · Łódź · İstanbul · Știință" aria-label="Display name"></label><label>Identifier<input value="Il1_O0_customer_001" aria-label="Identifier"></label></section></div>
+<section class="scroll"><h2>Latest queries</h2><table><thead><tr><th>Query</th><th>Owner</th><th>Status</th><th class="number">Rows</th><th class="number">Duration</th></tr></thead><tbody>
+<tr><td>Monthly recurring revenue</td><td>Zoë</td><td>Complete</td><td class="number">10,008</td><td class="number">1.28 s</td></tr>
+<tr><td>Activation by cohort</td><td>Ľudovít</td><td>Complete</td><td class="number">11,111</td><td class="number">0.95 s</td></tr>
+<tr><td>Retention: first 30 days</td><td>François</td><td>Running</td><td class="number">99,999</td><td class="number">2.40 s</td></tr>
+</tbody></table></section>
+<section><h2>Reading sizes and styles</h2><div id="styles"></div></section>
+<section><h2>Accents and identifiers</h2><span id="identifier-probe" style="font-size:48px;display:inline-block;white-space:nowrap">Il1 O0</span><p style="font-size:24px" class="sample">Il1 O0 rn m · Ąą Ęę Įį Ųų Ľľ ďť · Ģģ Șș Țț ð</p><p id="nfc">Café naïve Ångström — İstanbul, cœur, Łódź.</p><p id="nfd"></p><p class="sample">q&#x301; x&#x308;&#x301; i&#x326;&#x30B; j&#x326;&#x301; į&#x301; į&#x307;&#x301;</p></section>
+</main><script>
+const weights=[300,400,450,500,600,700];
+for(const weight of weights) for(const style of ['normal','italic']) {
+ const row=document.createElement('div');row.className='weight';
+ const label=document.createElement('span');label.className='muted';label.textContent=weight+(style==='italic'?' i':'');
+ const text=document.createElement('span');text.className='sample';text.style.cssText=`font-weight:${weight};font-style:${style};font-size:${weight>=600?12:14}px`;
+ text.textContent='Minimum revenue · office affinity · Il1 O0 · €1,234.56 · Ąą Ęę Ľľ';
+ row.append(label,text);document.querySelector('#styles').append(row);
+}
+document.querySelector('#nfd').textContent=document.querySelector('#nfc').textContent.normalize('NFD');
+</script></body></html>

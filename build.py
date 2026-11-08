@@ -19,7 +19,7 @@ from sources.italics import ITALIC_GLYPHS
 from sources.latin import LATIN, extend_latin
 from sources.marks import add_accents, features as mark_features
 from sources.glyphs import GLYPHS, EXTRA, PATH_WEIGHTS
-from sources.spacing import SIDEBEARINGS, KERNING
+from sources.spacing import SIDEBEARINGS, KERNING, optical_weights, kerning_for_style
 from sources.symbols import SYMBOLS, SYMBOL_WEIGHTS, SPACE_WIDTHS
 
 ROOT = Path(__file__).resolve().parent
@@ -104,7 +104,7 @@ def outline(path, stroke, path_weights=(), lower_loop_shift=0):
 
 
 def glyph_name(char):
-    return f'uni{ord(char):04X}'
+    return f'uni{ord(char[0]):04X}' + char[1:]
 
 
 def tt_glyph(shape):
@@ -135,7 +135,8 @@ def build(optical, weight=400, italic=False):
     tracking = 6 if optical == 'Text' else 0
     alternates = ITALIC_GLYPHS if italic else {}
     drawings = {
-        char: (width, outline(path, stroke, () if char in alternates else (PATH_WEIGHTS | SYMBOL_WEIGHTS).get(char, ()),
+        char: (width, outline(path, stroke, optical_weights(char, weight, italic,
+                              () if char in alternates else (PATH_WEIGHTS | SYMBOL_WEIGHTS).get(char, ())),
                               max(0, (stroke - 90) * 1.1) if char == 'g' and not italic else 0))
         for char, (width, path) in (GLYPHS | EXTRA | SYMBOLS | LATIN | alternates).items()
     }
@@ -154,6 +155,9 @@ def build(optical, weight=400, italic=False):
         drawings[char] = drawings['-']
     for char, radius in (('•', 55), ('●', 115)):
         drawings[char] = (350, Point(175, 300).buffer(radius, quad_segs=32))
+    # The default zero remains tabular but gains an identifier dot.
+    width, zero = drawings['0']
+    drawings['0'] = (width, unary_union([zero, Point(width/2, 360).buffer(max(32, stroke*.3), quad_segs=16)]))
     extend_latin(drawings, outline, stroke)
     compositions = add_accents(drawings, outline, stroke)
     attachment_features = mark_features(drawings, compositions, italic, tracking, glyph_name)
@@ -174,7 +178,8 @@ def build(optical, weight=400, italic=False):
 
     fb = FontBuilder(1000, isTTF=True)
     fb.setupGlyphOrder(list(glyphs))
-    fb.setupCharacterMap({ord(c): glyph_name(c) for c in drawings})
+    encoded = {c: glyph_name(c) for c in drawings if len(c) == 1}
+    fb.setupCharacterMap({ord(c): name for c, name in encoded.items()})
     fb.setupGlyf(glyphs)
     fb.setupHorizontalMetrics(metrics)
     fb.setupHorizontalHeader(ascent=1000, descent=-280, lineGap=0,
@@ -188,10 +193,10 @@ def build(optical, weight=400, italic=False):
         'styleName': legacy_style,
         'typographicFamily': family,
         'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.007',
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.008',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.007',
+        'version': 'Version 0.008',
         'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
@@ -211,7 +216,7 @@ def build(optical, weight=400, italic=False):
         base = unicodedata.normalize('NFD', char)[0]
         groups.setdefault(base, []).append(char)
     rules = []
-    for (left, right), value in KERNING.items():
+    for (left, right), value in kerning_for_style(weight, italic).items():
         for lchar in groups[left]:
             for rchar in groups[right]:
                 rules.append(f'pos {glyph_name(lchar)} {glyph_name(rchar)} {value};')
@@ -227,8 +232,8 @@ def build(optical, weight=400, italic=False):
     font = TTFont(path, recalcTimestamp=False)
     font.flavor = 'woff2'
     font.save(path.with_suffix('.woff2'))
-    return {'style': optical, 'weight': weight, 'name': filename_style, 'italic': italic, 'characters': len(drawings), 'glyphs': len(glyphs),
-            'seed_kerning_pairs': len(KERNING), 'kerning_pairs': len(rules), 'coverage': ''.join(sorted(drawings))}
+    return {'style': optical, 'weight': weight, 'name': filename_style, 'italic': italic, 'characters': len(encoded), 'glyphs': len(glyphs),
+            'seed_kerning_pairs': len(KERNING), 'kerning_pairs': len(rules), 'coverage': ''.join(sorted(encoded))}
 
 
 if __name__ == '__main__':

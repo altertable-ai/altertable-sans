@@ -4,12 +4,12 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.007 · Experimental · SIL Open Font License 1.1**
+**Version 0.008 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans specimen](proof.png)
+![Altertable Sans 0.008 specimen](proofs/v0.008/proof.png)
 
 ## Get the fonts
 
@@ -40,7 +40,9 @@ No build step is required to use the included fonts.
 | Text | Bold | 700 | ✓ | ✓ |
 | Display | Regular | 400 | ✓ | — |
 
-Text has more spacing and slightly stronger strokes than Display. Italics use a
+Text has more spacing and slightly stronger strokes than Display. Capital I
+has crossbars, lowercase l has an exit stroke, and zero has a dot. Heavy a/g
+bowls have optical corrections, and heavy/italic f pairs have separate spacing. Italics use a
 10° inclination with distinct single-storey `a` and `g` forms. All styles are
 static fonts; there is no variable font yet.
 
@@ -81,7 +83,7 @@ Keep a fallback stack for characters outside the font's coverage.
 Each style supports **374 Unicode characters**: printable ASCII, all letters in
 Latin-1 and Latin Extended-A, Romanian comma-below letters, capital sharp S,
 punctuation, currencies, arrows, mathematical symbols,
-and spacing characters. Numerals are tabular by default. Kerning includes
+and spacing characters. Numerals are tabular by default, with a dotted zero for identifiers. Kerning includes
 accented variants of the supported letter pairs.
 
 See [coverage.json](fonts/coverage.json) for the exact character set in each style.
@@ -103,9 +105,10 @@ python3 -m http.server 8768
 ```
 
 Open <http://localhost:8768/specimen.html> for editable text, reading-size samples,
-all weights, and italics. The [static specimen](proof.png),
-[Latin and mark proof](proofs/v0.007/latin.png), and
-[all-style Latin proof](proofs/v0.007/all-styles.png) are also included.
+all weights, and italics. The [static specimen](proofs/v0.008/proof.png),
+[Latin and mark proof](proofs/v0.008/latin.png),
+[all-style Latin proof](proofs/v0.008/all-styles.png), and
+[reading-size proof](proofs/v0.008/readability.png) are also included.
 Proofs render HarfBuzz-shaped glyphs through FreeType, including substitutions
 and mark offsets; they are not a substitute for browser/platform testing.
 
@@ -119,9 +122,10 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 python build.py
 python verify.py
-python -m unittest test_latin -v
+python -m unittest test_latin test_readability -v
 python proof.py
 python proof_latin.py
+python proof_readability.py
 ```
 
 On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in
@@ -130,7 +134,23 @@ PowerShell instead of `source`.
 The build writes TTF and WOFF2 files plus the coverage manifest into `fonts/`.
 Verification checks character coverage, font metadata, metrics, contours,
 clipping, kerning, and byte-identical rebuilds. GitHub Actions runs the build,
-verification, and proof renderer on each push and pull request.
+verification, and proof renderers on each push and pull request. The CI matrix
+also loads the WOFF2 fonts in Chromium, Firefox, and WebKit on Linux, macOS, and
+Windows, checking all Text weights/italics, canonical shaping, tabular numbers,
+mobile/desktop overflow, light/dark presentation, and download-failure fallback.
+Screenshots and measured widths are uploaded as workflow artifacts.
+
+Run the browser checks locally with:
+
+```sh
+npm ci
+npx playwright install --with-deps chromium firefox webkit
+npm run test:browser
+```
+
+[The interface proof](browser-proof.html) is a typography test fixture. It does
+not replace an acceptance pass over every product screen. A local query-screen
+Storybook pass is also used during this release's review.
 
 Editable drawings live in [sources/](sources/): `glyphs.py` defines the base
 letterforms, `italics.py` the italic alternates, `spacing.py` sidebearings and

@@ -2,3 +2,5 @@
 __pycache__/
 .reference/
 .DS_Store
+node_modules/
+browser-results/

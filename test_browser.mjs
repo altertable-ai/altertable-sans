@@ -1,0 +1,91 @@
+// Cross-engine/OS checks against actual WOFF2 faces and interface-sized layouts.
+import assert from 'node:assert/strict';
+import { createServer } from 'node:http';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { chromium, firefox, webkit } from 'playwright';
+
+const root = path.dirname(fileURLToPath(import.meta.url));
+const out = path.join(root, 'browser-results', process.platform);
+await mkdir(out, { recursive: true });
+const mime = { '.html':'text/html', '.css':'text/css', '.woff2':'font/woff2' };
+const server = createServer(async (request, response) => {
+  const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+  const file = path.resolve(root, '.' + pathname);
+  if (!file.startsWith(root + path.sep)) { response.writeHead(403).end(); return; }
+  try {
+    const bytes = await readFile(file);
+    response.writeHead(200, { 'Content-Type': mime[path.extname(file)] || 'application/octet-stream' });
+    response.end(bytes);
+  } catch { response.writeHead(404).end(); }
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const url = `http://127.0.0.1:${server.address().port}/browser-proof.html`;
+const results = [];
+try {
+  for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
+    const browser = await engine.launch();
+    try {
+      for (const width of [1280, 390]) for (const colorScheme of ['light', 'dark']) {
+        const page = await browser.newPage({ viewport: { width, height: 1000 }, colorScheme });
+        const errors = [];
+        page.on('pageerror', error => errors.push(error.message));
+        await page.goto(url);
+        const metrics = await page.evaluate(async () => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          // The shipped CSS intentionally uses optional loading. Use a fresh block
+          // face for optical screenshots so a first-load fallback cannot masquerade
+          // as a successful font review; test the shipped declarations separately.
+          const manifest = await fetch('fonts/coverage.json').then(r => r.json());
+          for (const entry of manifest.filter(e => e.style === 'Text')) {
+            const face = new FontFace('Proof Sans', `url(fonts/AltertableSansText-${entry.name}.woff2)`,
+              {weight:String(entry.weight), style:entry.italic?'italic':'normal', display:'block'});
+            document.fonts.add(await face.load());
+          }
+          document.body.style.fontFamily = '"Proof Sans", system-ui, sans-serif';
+          const measurements = [];
+          for (const weight of [300,400,450,500,600,700]) for (const style of ['normal','italic']) {
+            const font = `${style} ${weight} 16px "Altertable Sans"`;
+            const loaded = await document.fonts.load(font);
+            if (loaded.length !== 1 || loaded[0].status !== 'loaded') throw new Error(`Face failed: ${font}`);
+            context.font = `${style} ${weight} 16px "Proof Sans"`;
+            const nfc = 'Café naïve Ångström Ąą Ęę Ľľ';
+            const nfd = nfc.normalize('NFD');
+            const digits = [...'0123456789'].map(c => context.measureText(c).width);
+            measurements.push({ weight, style, nfc:context.measureText(nfc).width,
+              nfd:context.measureText(nfd).width, digitSpread:Math.max(...digits)-Math.min(...digits) });
+          }
+          await document.fonts.ready;
+          const probe = document.querySelector('#identifier-probe');
+          context.font = getComputedStyle(probe).font;
+          const probeDifference = Math.abs(probe.getBoundingClientRect().width - context.measureText(probe.textContent).width);
+          return { measurements, probeDifference, overflow:document.documentElement.scrollWidth > innerWidth,
+            clipped:[...document.querySelectorAll('[data-fit]')].filter(e => e.scrollWidth > e.clientWidth || e.scrollHeight > e.clientHeight).map(e=>e.textContent) };
+        });
+        assert.deepEqual(errors, [], `${name}: browser errors`);
+        assert.ok(metrics.probeDifference < .1, `${name}: visible text stayed in fallback after font load`);
+        assert.equal(metrics.overflow, false, `${name}/${width}: page overflow`);
+        assert.deepEqual(metrics.clipped, [], `${name}/${width}: clipped controls`);
+        for (const m of metrics.measurements) {
+          assert.ok(Math.abs(m.nfc-m.nfd) < .05, `${name}: NFC/NFD differ (${m.weight} ${m.style})`);
+          assert.ok(m.digitSpread < .05, `${name}: digits not tabular`);
+        }
+        await page.screenshot({ path:path.join(out,`${name}-${width}-${colorScheme}.png`), fullPage:true });
+        results.push({ engine:name, width, colorScheme, ...metrics });
+        await page.close();
+      }
+      // A failed download must leave usable fallback text and controls.
+      const fallback = await browser.newPage({ viewport:{width:390,height:900} });
+      await fallback.route('**/*.woff2', route => route.abort());
+      await fallback.goto(url);
+      await fallback.evaluate(() => document.fonts.ready);
+      assert.equal(await fallback.locator('h1').isVisible(), true);
+      assert.ok(await fallback.locator('button').evaluate(e => e.getBoundingClientRect().width) > 40);
+      await fallback.close();
+      console.log(`PASS ${name}: all Text faces, shaping, digits, desktop/mobile, light/dark, fallback`);
+    } finally { await browser.close(); }
+  }
+  await writeFile(path.join(out,'metrics.json'), JSON.stringify(results,null,2)+'\n');
+} finally { await new Promise(resolve => server.close(resolve)); }
