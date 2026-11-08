@@ -39,6 +39,15 @@ class Readability(unittest.TestCase):
                         self.assertGreaterEqual(actual, baseline * .85)
                         self.assertLessEqual(actual, baseline * 1.15)
 
+    def test_one_aligns_with_flat_topped_figures(self):
+        for path in (ROOT / 'fonts').glob('*.ttf'):
+            font = TTFont(path)
+            cmap = font.getBestCmap()
+            one = font['glyf'][cmap[ord('1')]]
+            four = font['glyf'][cmap[ord('4')]]
+            self.assertEqual((one.yMin, one.yMax), (four.yMin, four.yMax), path.name)
+            self.assertEqual((one.yMin, one.yMax), (0, 720), path.name)
+
     def test_identifiers_have_structural_distinctions(self):
         for path in (ROOT / 'fonts').glob('*.ttf'):
             f = TTFont(path); cmap = f.getBestCmap()

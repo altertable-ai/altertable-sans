@@ -4,12 +4,12 @@ An open-source sans-serif typeface for interfaces and the web, with broad
 proportions, open counters, and tabular numerals. Available in six Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.010 · Experimental · SIL Open Font License 1.1**
+**Version 0.011 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.010 specimen](proofs/v0.010/proof.png)
+![Altertable Sans 0.011 specimen](proofs/v0.011/proof.png)
 
 ## Get the fonts
 
@@ -125,6 +125,13 @@ includes light and dark surfaces, 12–48 px sizes, weights 400/450/500, and ita
 Version 0.010 opens c/e apertures and s terminals, balances a sidebearings across
 weights, and separates r+n/m combinations more clearly. The comparison preserves
 the baseline Text WOFF2 faces under `proofs/v0.009/fonts/`.
+
+### Numeral alignment proof
+
+Open [numeral-proof.html](numeral-proof.html) to compare 0.010 and 0.011.
+Version 0.011 clips the diagonal-to-stem join of `1` to the 720-unit numeral
+alignment. Its baseline, advance width, and footless design are unchanged.
+The comma and other numeral outlines are unchanged.
 
 ## Build from source
 

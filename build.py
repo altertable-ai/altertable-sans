@@ -140,6 +140,8 @@ def build(optical, weight=400, italic=False):
                               max(0, (stroke - 90) * 1.1) if char == 'g' and not italic else 0))
         for char, (width, path) in (GLYPHS | EXTRA | SYMBOLS | LATIN | alternates).items()
     }
+    width, one = drawings['1']
+    drawings['1'] = (width, one.intersection(box(-10000, -10000, 10000, 720)))
     for char in 'VWvw':
         width, shape = drawings[char]
         drawings[char] = (width, shape.intersection(box(-10000, 0, 10000, 10000)))
@@ -193,10 +195,10 @@ def build(optical, weight=400, italic=False):
         'styleName': legacy_style,
         'typographicFamily': family,
         'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.010',
+        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.011',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.010',
+        'version': 'Version 0.011',
         'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
