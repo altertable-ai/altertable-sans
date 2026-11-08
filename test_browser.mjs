@@ -31,6 +31,10 @@ try {
         const page = await browser.newPage({ viewport: { width, height: 1000 }, colorScheme });
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
+        page.on('console', message => {
+          if (message.type() === 'error') console.error(`${name}/${width}: ${message.text()}`);
+        });
+        page.on('requestfailed', request => console.error(`${name}/${width}: ${request.url()} ${request.failure()?.errorText}`));
         await page.goto(url);
         const metrics = await page.evaluate(async () => {
           const canvas = document.createElement('canvas');
@@ -42,7 +46,8 @@ try {
           for (const entry of manifest.filter(e => e.style === 'Text')) {
             const face = new FontFace('Proof Sans', `url(fonts/AltertableSansText-${entry.name}.woff2)`,
               {weight:String(entry.weight), style:entry.italic?'italic':'normal', display:'block'});
-            document.fonts.add(await face.load());
+            try { document.fonts.add(await face.load()); }
+            catch (error) { throw new Error(`Cannot load ${entry.name}: ${error.message}`); }
           }
           document.body.style.fontFamily = '"Proof Sans", system-ui, sans-serif';
           const measurements = [];
@@ -104,15 +109,16 @@ try {
               context.font = `${style} ${weight} 16px "${family}"`;
               return context.measureText('minimum rhythm').width;
             });
-            measurements.push({weight,style,before:widths[0],after:widths[1]});
+            measurements.push({weight,style,before:widths[0],after:widths[1],
+              faces:[...document.fonts].filter(face=>face.family.startsWith('Revision')).map(face=>({family:face.family,weight:face.weight,style:face.style,status:face.status}))});
           }
           return {measurements,overflow:document.documentElement.scrollWidth>innerWidth};
         });
         assert.equal(spacing.overflow, false, `${name}/${width}: comparison overflow`);
         for (const m of spacing.measurements) {
-          if (m.weight === 300) assert.ok(m.after < m.before, `${name}: Light spacing unchanged`);
-          else if (m.weight === 400) assert.ok(Math.abs(m.after-m.before)<.1, `${name}: Regular spacing changed`);
-          else assert.ok(m.after > m.before, `${name}: heavy spacing unchanged`);
+          if (m.weight === 300) assert.ok(m.after < m.before, `${name}: Light spacing unchanged ${JSON.stringify(m)}`);
+          else if (m.weight === 400) assert.ok(Math.abs(m.after-m.before)<.1, `${name}: Regular spacing changed ${JSON.stringify(m)}`);
+          else assert.ok(m.after > m.before, `${name}: heavy spacing unchanged ${JSON.stringify(m)}`);
         }
         await review.screenshot({path:path.join(out,`${name}-${width}-comparison.png`),fullPage:true});
         await review.goto(url.replace('browser-proof.html', 'specimen.html'));
