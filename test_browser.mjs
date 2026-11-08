@@ -35,6 +35,13 @@ try {
           if (message.type() === 'error') console.error(`${name}/${width}: ${message.text()}`);
         });
         page.on('requestfailed', request => console.error(`${name}/${width}: ${request.url()} ${request.failure()?.errorText}`));
+        // Exercise optional-font timeouts as well as fast local downloads.
+        if (width === 390 && colorScheme === 'dark') {
+          await page.route('**/*.woff2', async route => {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            await route.continue();
+          });
+        }
         await page.goto(url);
         const metrics = await page.evaluate(async () => {
           const canvas = document.createElement('canvas');
@@ -43,8 +50,19 @@ try {
           // face for optical screenshots so a first-load fallback cannot masquerade
           // as a successful font review; test the shipped declarations separately.
           const manifest = await fetch('fonts/coverage.json').then(r => r.json());
+          const rules = [...document.styleSheets].flatMap(sheet => [...sheet.cssRules])
+            .filter(rule => rule.type === CSSRule.FONT_FACE_RULE);
           for (const entry of manifest.filter(e => e.style === 'Text')) {
-            const face = new FontFace('Proof Sans', `url(fonts/AltertableSansText-${entry.name}.woff2)`,
+            const style = entry.italic ? 'italic' : 'normal';
+            const matches = rules.filter(rule => rule.style.fontWeight === String(entry.weight)
+              && rule.style.fontStyle === style);
+            if (matches.length !== 1) throw new Error(`Missing or duplicate CSS face: ${entry.name}`);
+            const declaration = matches[0].style;
+            if (declaration.fontDisplay !== 'optional'
+              || !declaration.getPropertyValue('src').includes(`AltertableSansText-${entry.name}.woff2`)) {
+              throw new Error(`Incorrect CSS face: ${entry.name}`);
+            }
+            const face = new FontFace('Proof Sans', declaration.getPropertyValue('src'),
               {weight:String(entry.weight), style:entry.italic?'italic':'normal', display:'block'});
             try { document.fonts.add(await face.load()); }
             catch (error) { throw new Error(`Cannot load ${entry.name}: ${error.message}`); }
@@ -52,7 +70,7 @@ try {
           document.body.style.fontFamily = '"Proof Sans", system-ui, sans-serif';
           const measurements = [];
           for (const weight of [300,400,450,500,600,700]) for (const style of ['normal','italic']) {
-            const font = `${style} ${weight} 16px "Altertable Sans"`;
+            const font = `${style} ${weight} 16px "Proof Sans"`;
             const loaded = await document.fonts.load(font);
             if (loaded.length !== 1 || loaded[0].status !== 'loaded') throw new Error(`Face failed: ${font}`);
             context.font = `${style} ${weight} 16px "Proof Sans"`;
@@ -104,20 +122,22 @@ try {
         const spacing = await review.evaluate(() => {
           const context = document.createElement('canvas').getContext('2d');
           const measurements = [];
+          // Linux rounds advances at text sizes, hiding small spacing revisions.
+          // Compare design-scale metrics; the page still renders its 14–24px proofs.
           for (const weight of [300,400,450,500,600,700]) for (const style of ['normal','italic']) {
             const widths = ['Revision Before','Revision After'].map(family => {
-              context.font = `${style} ${weight} 16px "${family}"`;
-              return context.measureText('minimum rhythm').width;
+              context.font = `${style} ${weight} 1000px "${family}"`;
+              return context.measureText('minimum rhythm').width / 1000;
             });
             measurements.push({weight,style,before:widths[0],after:widths[1],
-              faces:[...document.fonts].filter(face=>face.family.startsWith('Revision')).map(face=>({family:face.family,weight:face.weight,style:face.style,status:face.status}))});
+              faces:[...document.fonts].filter(face=>face.family.includes('Revision')).map(face=>({family:face.family,weight:face.weight,style:face.style,status:face.status}))});
           }
           return {measurements,overflow:document.documentElement.scrollWidth>innerWidth};
         });
         assert.equal(spacing.overflow, false, `${name}/${width}: comparison overflow`);
         for (const m of spacing.measurements) {
           if (m.weight === 300) assert.ok(m.after < m.before, `${name}: Light spacing unchanged ${JSON.stringify(m)}`);
-          else if (m.weight === 400) assert.ok(Math.abs(m.after-m.before)<.1, `${name}: Regular spacing changed ${JSON.stringify(m)}`);
+          else if (m.weight === 400) assert.ok(Math.abs(m.after-m.before)<.0001, `${name}: Regular spacing changed ${JSON.stringify(m)}`);
           else assert.ok(m.after > m.before, `${name}: heavy spacing unchanged ${JSON.stringify(m)}`);
         }
         await review.screenshot({path:path.join(out,`${name}-${width}-comparison.png`),fullPage:true});
