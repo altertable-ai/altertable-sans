@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni0308" format="2">
+  <unicode hex="0308"/>
+  <outline>
+    <contour>
+      <point x="-126" y="0" type="line"/>
+      <point x="-126" y="80" type="line"/>
+      <point x="-62" y="80" type="line"/>
+      <point x="-62" y="0" type="line"/>
+    </contour>
+    <contour>
+      <point x="74" y="0" type="line"/>
+      <point x="74" y="80" type="line"/>
+      <point x="138" y="80" type="line"/>
+      <point x="138" y="0" type="line"/>
+    </contour>
+  </outline>
+</glyph>

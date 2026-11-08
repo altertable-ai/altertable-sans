@@ -1,0 +1,4 @@
+The Altertable Sans Project Authors
+
+Individual contributions are recorded in the repository's Git history.
+Contributors should add their preferred attribution here with their changes.

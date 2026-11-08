@@ -40,10 +40,11 @@ jobs:
           PY
         shell: bash
       - run: python verify.py
-      - run: python -m unittest test_latin test_readability -v
+      - run: python -m unittest discover -v
       - run: python proof.py
       - run: python proof_latin.py
       - run: python proof_readability.py
+      - run: python proof_googlefonts.py
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -70,8 +71,75 @@ jobs:
             browser-results/
             proofs/
 
-  release:
+  ufo:
+    name: Rebuild editable UFO sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-source.txt
+      - run: python -m pip install -r requirements-source.txt
+      - run: python -m unittest test_ufo_sources -v
+
+  googlefonts:
+    name: Google Fonts readiness (${{ matrix.family }})
     needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [Text, Display]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-googlefonts.txt
+      - run: python -m pip install -r requirements-googlefonts.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: font-distribution
+          path: .
+      - name: Run informational Google Fonts checks
+        id: fontbakery
+        continue-on-error: true
+        env:
+          FAMILY: ${{ matrix.family }}
+          REPORT_DIR: ${{ runner.temp }}/googlefonts-report
+        run: |
+          mkdir -p "$REPORT_DIR"
+          fontbakery check-googlefonts --no-progress --no-colors --timeout 30 \
+            --html "$REPORT_DIR/report.html" \
+            --json "$REPORT_DIR/report.json" \
+            fonts/AltertableSans"${FAMILY}"-*.ttf
+      - name: Summarize readiness status
+        if: always()
+        env:
+          FAMILY: ${{ matrix.family }}
+          RESULT: ${{ steps.fontbakery.outcome }}
+        run: |
+          {
+            echo "### Google Fonts readiness: $FAMILY"
+            echo "FontBakery step: **$RESULT**. These checks are informational and do not gate releases."
+            echo "Download the googlefonts-readiness-$FAMILY artifact for the HTML and JSON reports."
+            echo "A passing report does not imply Google Fonts acceptance; review skipped checks and onboarding requirements."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload readiness reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: googlefonts-readiness-${{ matrix.family }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/googlefonts-report/
+
+  release:
+    needs: [verify, ufo]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     timeout-minutes: 10

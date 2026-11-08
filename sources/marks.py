@@ -3,7 +3,7 @@ import math
 import unicodedata
 from shapely import affinity
 from shapely.ops import unary_union
-from shapely.geometry import LineString, box
+from shapely.geometry import LineString, Point, box
 from sources.glyphs import ACCENTS
 
 MARK_PATHS = ACCENTS | {
@@ -15,6 +15,7 @@ MARK_PATHS = ACCENTS | {
     '\u0328': 'M45 0 C-105 -90 -80 -205 65 -155',
 }
 GAP = 45
+BOTTOM_GAP = 20
 
 
 def mark_class(char):
@@ -43,15 +44,23 @@ def base_anchor(width, form, kind):
         y = y0 + 25
         section = form.intersection(LineString([(x0-1, y), (x1+1, y)]))
         return (section.bounds[2]-15, y)
-    return ((x0+x1)/2, y0-GAP if kind == 'bottom' else y0+12)
+    return ((x0+x1)/2, y0-BOTTOM_GAP if kind == 'bottom' else y0+12)
 
 
 def add_accents(drawings, outline, stroke):
     marks = {c: normalized_mark(p, outline, stroke, mark_class(c) != 'top',
                                 mark_class(c) in ('cedilla', 'ogonek'))
              for c, p in MARK_PATHS.items()}
+    # Below-base commas need the compact proportions of a diacritic, rather
+    # than the height of a punctuation comma. This also keeps stacks legible.
+    comma = marks['\u0326']
+    marks['\u0326'] = affinity.scale(comma, xfact=.75,
+                                      yfact=min(1, 65/(comma.bounds[3]-comma.bounds[1])),
+                                      origin=(0, 0))
     compositions = []
-    for code in [*range(0xC0, 0x180), *range(0x218, 0x21C)]:
+    for code in [*range(0xC0, 0x180), 0x1CD, 0x1CE, 0x1D3, 0x1D4, 0x1E6, 0x1E7,
+                 0x1E8, 0x1E9, 0x1EE, 0x1EF, 0x1FE, 0x1FF, 0x21E, 0x21F,
+                 *range(0x218, 0x21C), *range(0x1E80, 0x1E86), 0x1EBC, 0x1EBD, 0x1EF2, 0x1EF3]:
         char = chr(code)
         parts = unicodedata.normalize('NFD', char)
         if len(parts) != 2 or parts[0] not in drawings or parts[1] not in marks:
@@ -84,6 +93,17 @@ def add_accents(drawings, outline, stroke):
             x, y = base_anchor(width, dotless, kind)
             drawings['į.nodot'] = (round(width), unary_union([
                 dotless, affinity.translate(mark, xoff=x, yoff=y)]))
+    # Spacing accents share the combining drawings at their traditional heights.
+    for char, combining in zip('¨¯´¸ˆˇ˘˙˚˛˜˝',
+                               '\u0308\u0304\u0301\u0327\u0302\u030c\u0306\u0307\u030a\u0328\u0303\u030b'):
+        form = marks[combining]
+        width = max(300, math.ceil(form.bounds[2] - form.bounds[0] + 100))
+        drawings[char] = (width, affinity.translate(form, xoff=width/2,
+                                                   yoff=600 if mark_class(combining) == 'top' else 0))
+    # A dotted circle makes isolated marks visible and provides ordinary anchors.
+    dots = [Point(300 + 220*math.cos(a*math.pi/6), 255 + 220*math.sin(a*math.pi/6))
+            .buffer(stroke*.30, quad_segs=8) for a in range(12)]
+    drawings['◌'] = (600, unary_union(dots))
     for char, form in marks.items():
         drawings[char] = (0, form)
     return compositions
@@ -109,7 +129,7 @@ def features(drawings, compositions, italic, tracking, name):
         lines.append(f'markClass {name(char)} {anchor(0, 0)} @MC_{mark_class(char)};')
     lines.append('feature mark {')
     for char, (width, form) in drawings.items():
-        if not unicodedata.category(char[0]).startswith('L') or form.is_empty:
+        if (not unicodedata.category(char[0]).startswith('L') and char != '◌') or form.is_empty:
             continue
         anchors = ' '.join(f'{anchor(*base_anchor(width, form, kind))} mark @MC_{kind}'
                            for kind in ['top', 'bottom', 'cedilla', 'ogonek'])
@@ -119,7 +139,7 @@ def features(drawings, compositions, italic, tracking, name):
     for char in MARK_PATHS:
         form = drawings[char][1]
         kind = mark_class(char)
-        y = form.bounds[3]+GAP if kind == 'top' else form.bounds[1]-GAP
+        y = form.bounds[3]+GAP if kind == 'top' else form.bounds[1]-(BOTTOM_GAP if kind == 'bottom' else GAP)
         lines.append(f'pos mark {name(char)} {anchor(0, y)} mark @MC_{kind};')
     lines.append('} mkmk;')
     return '\n'.join(lines)

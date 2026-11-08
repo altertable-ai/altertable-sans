@@ -1,26 +1,27 @@
 # Altertable Sans
 
 An open-source sans-serif typeface for interfaces and the web, with broad
-proportions, open counters, and tabular numerals. Available in six Text weights
+proportions, open counters, and tabular numerals. Available in five Text weights
 with matching italics, plus a Regular Display style.
 
-**Version 0.013 · Experimental · SIL Open Font License 1.1**
+**Version 1.000 · Experimental · SIL Open Font License 1.1**
 
 The family is in active development. You can use and modify it, but expect changes
 to letterforms, spacing, and metrics before a stable release.
 
-![Altertable Sans 0.013 specimen](proofs/v0.013/proof.png)
+![Altertable Sans 1.000 specimen](proofs/v1.000/proof.png)
 
-## Latest refinement
+## Google Fonts engineering update
 
-Version 0.013 gently opens Text spacing, redraws the upright double-storey `g`
-and the numeral `2`, and centers the tabular figures within their cells. The
-dotted zero, barred capital I, tailed lowercase l, and proportional-figure
-features are retained. All styles have been rebuilt.
+Version 1.000 adds the missing Latin Core characters, Welsh and additional Latin
+letters, fixes metadata and style linking, and exports editable UFO sources.
+The version follows Google Fonts' numbering requirements; the design remains
+experimental. Book (450) has been removed. Use Regular (400) or Medium (500)
+instead. SemiBold filenames now use the canonical `SemiBold` spelling.
 
-See [the before/after proof](refinement-proof.html) at 12, 14, and 16px, or
-[the rendered comparison](proofs/refinement-after.png). The optional Suisse
-International benchmark uses a local reference font that is not distributed.
+Heavy percent, at-sign, and section-sign counters are corrected. Combining
+commas are more compact, and rounded contours are cleaned without changing
+text advances. Typographic line metrics remain unchanged.
 
 ## Get the fonts
 
@@ -45,9 +46,8 @@ No build step is required to use the included fonts.
 | --- | --- | --- | --- | --- |
 | Text | Light | 300 | ✓ | ✓ |
 | Text | Regular | 400 | ✓ | ✓ |
-| Text | Book | 450 | ✓ | ✓ |
 | Text | Medium | 500 | ✓ | ✓ |
-| Text | Semibold | 600 | ✓ | ✓ |
+| Text | SemiBold | 600 | ✓ | ✓ |
 | Text | Bold | 700 | ✓ | ✓ |
 | Display | Regular | 400 | ✓ | — |
 
@@ -81,7 +81,7 @@ em {
 }
 ```
 
-The stylesheet declares all twelve Text faces. Browsers fetch only the faces
+The stylesheet declares all ten Text faces. Browsers fetch only the faces
 needed by the page. It uses `font-display: optional`, so a slow first load may
 retain the fallback font. You can change that policy to suit your site.
 
@@ -106,7 +106,7 @@ with both 0.012 options in [figure-spacing-proof.html](figure-spacing-proof.html
 
 ## Character coverage
 
-Each style supports **374 Unicode characters**: printable ASCII, all letters in
+Each style supports **420 Unicode characters**: printable ASCII, all letters in
 Latin-1 and Latin Extended-A, Romanian comma-below letters, capital sharp S,
 punctuation, currencies, arrows, mathematical symbols,
 and spacing characters. Numerals are tabular by default, with a dotted zero for identifiers. Kerning includes
@@ -153,10 +153,11 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 python build.py
 python verify.py
-python -m unittest test_latin test_readability -v
+python -m unittest discover -v
 python proof.py
 python proof_latin.py
 python proof_readability.py
+python proof_googlefonts.py
 ```
 
 On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in
@@ -170,25 +171,68 @@ also loads the WOFF2 fonts in Chromium, Firefox, and WebKit on Linux, macOS, and
 Windows, checking all Text weights/italics, canonical shaping, tabular numbers,
 mobile/desktop overflow, light/dark presentation, and download-failure fallback.
 Screenshots and measured widths are uploaded as workflow artifacts.
+A separate CI job compiles the checked-in UFOs with Fontmake and compares their
+outlines, metrics, coverage, and shaping with the distribution.
 The tested font distribution is also uploaded as the `font-distribution` artifact.
+
+### Google Fonts readiness
+
+After the build and test matrix passes, CI runs FontBakery's `googlefonts`
+profile against the tested TTFs, separately for Text and Display. Download
+`googlefonts-readiness-Text` and `googlefonts-readiness-Display` from the workflow
+run for HTML and JSON reports. Findings are informational and do not block
+GitHub Releases. Tool installation or missing-report failures remain visible
+as CI failures. Reports are artifacts, not committed source files.
+
+To reproduce the checks locally, use a separate Python 3.12 environment so QA
+dependencies do not change the font build environment:
+
+```sh
+python3.12 -m venv /tmp/altertable-googlefonts-qa
+/tmp/altertable-googlefonts-qa/bin/python -m pip install -r requirements-googlefonts.txt
+mkdir -p /tmp/altertable-googlefonts-reports
+for family in Text Display; do
+  /tmp/altertable-googlefonts-qa/bin/fontbakery check-googlefonts \
+    --no-progress --no-colors --timeout 30 \
+    --html "/tmp/altertable-googlefonts-reports/$family.html" \
+    --json "/tmp/altertable-googlefonts-reports/$family.json" \
+    fonts/AltertableSans"$family"-*.ttf
+done
+```
+
+FontBakery returns a nonzero status for failing checks. Review failures, warnings,
+errors, and skipped checks; a passing report alone does not establish readiness.
+The repaired fonts pass the profile without failing checks. Warnings still need
+review: the project vendor ID `ATBL` is not registered with Microsoft; Google
+Fonts subset definitions omit some supported marks and symbols; contour-count
+and caron checks include design heuristics. Small near-axis segments and narrow
+joins still receive outline-review warnings; these need type-design judgment,
+not indiscriminate contour simplification. No checks are excluded to hide
+these results. Metadata/catalog checks that need a `google/fonts` submission
+directory are skipped in this upstream repository. Before submission, complete
+the catalog metadata and designer attribution with the Google Fonts team, sign
+the contributor agreement, and confirm the remaining design-review items.
+Follow the [Google Fonts onboarding guide](https://googlefonts.github.io/gf-guide/onboarding.html)
+and open an Add Font issue before proposing a PR to `google/fonts`. Submission
+automation is deferred until the family is ready for review.
 
 ### Releases
 
-Push a version tag matching the font metadata (for example, `v0.009`) to publish
+Push a version tag matching the font metadata (for example, `v1.000`) to publish
 a GitHub Release. The tag runs the same build and tests on all three operating
 systems; publication only proceeds when the entire matrix passes. A mismatched
 tag fails verification. The release includes a ZIP of the tested TTF/WOFF2 fonts,
 coverage manifest, stylesheet, license, and README, plus `SHA256SUMS`.
 
-After updating the version in `build.py`, rebuilding the fonts, and committing
+After updating `VERSION` in `sources/font_metadata.py`, rebuilding the fonts, and committing
 the release changes:
 
 ```sh
-git tag -a v0.009 -m "Altertable Sans 0.009"
-git push origin v0.009
+git tag -a v1.000 -m "Altertable Sans 1.000"
+git push origin v1.000
 ```
 
-Use the new version in place of `v0.009` for subsequent releases. Branch pushes,
+Use the new version in place of `v1.000` for subsequent releases. Branch pushes,
 pull requests, and manual workflow runs build and test without publishing.
 
 Run the browser checks locally with:
@@ -203,12 +247,26 @@ npm run test:browser
 not replace an acceptance pass over every product screen. A local query-screen
 Storybook pass is also used during this release's review.
 
-Editable drawings live in [sources/](sources/): `glyphs.py` defines the base
-letterforms, `italics.py` the italic alternates, `spacing.py` sidebearings and
-kerning, and `symbols.py` additional symbols. `latin.py` supplies additional Latin
-letters; `marks.py` constructs accents and OpenType attachment rules. The builder
-expands these centerlines into flattened outlines. This is an experimental construction
-method, not a finished set of Bézier masters.
+### Editable sources
+
+The Python drawings in `sources/` are the procedural design source. Running
+`python build.py` regenerates both the distribution fonts and the UFOs in
+`sources/ufo/`. UFOs contain editable outlines, character maps, metrics, naming,
+and OpenType feature source. **Regeneration overwrites edits made directly to
+those UFOs**, so keep any intentional UFO edits in version control.
+
+To compile the checked-in UFOs without regenerating them, use a separate Python
+3.12 environment and the standard Fontmake pipeline:
+
+```sh
+python3.12 -m venv /tmp/altertable-ufo-build
+/tmp/altertable-ufo-build/bin/python -m pip install -r requirements-source.txt
+/tmp/altertable-ufo-build/bin/python sources/build.py --output-dir /tmp/altertable-ufo-fonts
+```
+
+The generator expands original centerlines into flattened outlines. UFO export
+makes those outlines editable in standard font editors; it does not convert
+them into Bézier masters or a variable font.
 
 ## Contributing
 

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni2020" format="2">
+  <advance width="512"/>
+  <unicode hex="2020"/>
+  <outline>
+    <contour>
+      <point x="451" y="513" type="line"/>
+      <point x="451" y="430" type="line"/>
+      <point x="301" y="430" type="line"/>
+      <point x="301" y="-48" type="line"/>
+      <point x="211" y="-48" type="line"/>
+      <point x="211" y="430" type="line"/>
+      <point x="61" y="430" type="line"/>
+      <point x="61" y="513" type="line"/>
+      <point x="211" y="513" type="line"/>
+      <point x="211" y="760" type="line"/>
+      <point x="301" y="760" type="line"/>
+      <point x="301" y="513" type="line"/>
+    </contour>
+  </outline>
+</glyph>

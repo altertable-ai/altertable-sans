@@ -45,7 +45,7 @@ th { font-weight:500; color:var(--muted); }
 <section><h2>Reading sizes and styles</h2><p class="muted">Proportional figures for text; the table and metrics above use tabular figures. <a href="figure-spacing-proof.html">Compare figure spacing</a>.</p><div id="styles"></div></section>
 <section><h2>Accents and identifiers</h2><span id="identifier-probe" style="font-size:48px;display:inline-block;white-space:nowrap">Il1 O0</span><p style="font-size:24px" class="sample">Il1 O0 rn m · Ąą Ęę Įį Ųų Ľľ ďť · Ģģ Șș Țț ð</p><p id="nfc">Café naïve Ångström — İstanbul, cœur, Łódź.</p><p id="nfd"></p><p class="sample">q&#x301; x&#x308;&#x301; i&#x326;&#x30B; j&#x326;&#x301; į&#x301; į&#x307;&#x301;</p></section>
 </main><script>
-const weights=[300,400,450,500,600,700];
+const weights=[300,400,500,600,700];
 for(const weight of weights) for(const style of ['normal','italic']) {
  const row=document.createElement('div');row.className='weight';
  const label=document.createElement('span');label.className='muted';label.textContent=weight+(style==='italic'?' i':'');

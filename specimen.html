@@ -139,19 +139,13 @@
       }
       @font-face {
         font-family: 'Altertable Text';
-        src: url('fonts/AltertableSansText-Book.woff2?v=12') format('woff2');
-        font-weight: 450;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Altertable Text';
         src: url('fonts/AltertableSansText-Medium.woff2?v=12') format('woff2');
         font-weight: 500;
         font-display: swap;
       }
       @font-face {
         font-family: 'Altertable Text';
-        src: url('fonts/AltertableSansText-Semibold.woff2?v=12') format('woff2');
+        src: url('fonts/AltertableSansText-SemiBold.woff2?v=12') format('woff2');
         font-weight: 600;
         font-display: swap;
       }
@@ -177,12 +171,6 @@
       @font-face {
         font-family: 'Altertable Text';
         font-style: italic;
-        font-weight: 450;
-        src: url('fonts/AltertableSansText-BookItalic.woff2?v=12') format('woff2');
-      }
-      @font-face {
-        font-family: 'Altertable Text';
-        font-style: italic;
         font-weight: 500;
         src: url('fonts/AltertableSansText-MediumItalic.woff2?v=12')
           format('woff2');
@@ -191,7 +179,7 @@
         font-family: 'Altertable Text';
         font-style: italic;
         font-weight: 600;
-        src: url('fonts/AltertableSansText-SemiboldItalic.woff2?v=12')
+        src: url('fonts/AltertableSansText-SemiBoldItalic.woff2?v=12')
           format('woff2');
       }
       @font-face {
@@ -208,7 +196,7 @@
       .brand-surface { padding: clamp(20px, 4vw, 40px); border: 1px solid var(--brand-line); background: var(--brand-paper); color: var(--brand-ink); }
       .brand-light { --brand-paper: #fff; --brand-ink: #242922; --brand-line: #d9ddd5; }
       .brand-dark { --brand-paper: #171c19; --brand-ink: #edf1e9; --brand-line: #414a43; }
-      .brand-surface h3 { max-width: 24ch; font-size: clamp(28px, 4vw, 48px); font-weight: 450; line-height: 1.12; letter-spacing: -.02em; margin: 24px 0; }
+      .brand-surface h3 { max-width: 24ch; font-size: clamp(28px, 4vw, 48px); font-weight: 400; line-height: 1.12; letter-spacing: -.02em; margin: 24px 0; }
       .brand-surface p { max-width: 65ch; }
       .brand-metrics { display: flex; flex-wrap: wrap; gap: 24px; padding: 20px 0; border-block: 1px solid var(--brand-line); margin: 24px 0; }
       .brand-metrics dt { font-size: 12px; margin-bottom: 8px; }
@@ -221,7 +209,7 @@
   <body>
     <main>
       <header>
-        <div class="meta">Altertable Sans · Website proof · 0.013</div>
+        <div class="meta">Altertable Sans · Website proof · 1.000</div>
         <h1
           class="sample"
           contenteditable="true"
@@ -232,7 +220,7 @@
           A quieter kind of clarity.
         </h1>
         <p class="intro">
-          An original sans-serif in development. This proof contains six Text
+          An original sans-serif in development. This proof contains five Text
           weights with italics and Regular Display. Select the headline or a paragraph to try
           your own words.
         </p>
@@ -337,9 +325,9 @@
       <section>
         <h2>What this proof does and does not contain</h2>
         <p class="intro">
-          374 encoded characters, tabular default numerals, and an initial
+          420 encoded characters, tabular default numerals, and an initial
           kerning pass. Text has heavier strokes and more spacing than Display.
-          The family has six Text weights with italics and a separate Regular Display.
+          The family has five Text weights with italics and a separate Regular Display.
           These are static fonts, not a finished optical-size system.
         </p>
         <p class="intro">
@@ -367,14 +355,6 @@
           Aligning signals, comparing results, and finding what matters. © 2026
           · €123.45 →
         </p>
-        <p class="meta">450 · Book</p>
-        <p style="font-size: 28px; font-weight: 450">
-          Good questions deserve clear answers.
-        </p>
-        <p style="font-size: 16px; font-weight: 450">
-          Aligning signals, comparing results, and finding what matters. © 2026
-          · €123.45 →
-        </p>
         <p class="meta">500 · Medium</p>
         <p style="font-size: 28px; font-weight: 500">
           Good questions deserve clear answers.
@@ -383,7 +363,7 @@
           Aligning signals, comparing results, and finding what matters. © 2026
           · €123.45 →
         </p>
-        <p class="meta">600 · Semibold</p>
+        <p class="meta">600 · SemiBold</p>
         <p style="font-size: 28px; font-weight: 600">
           Good questions deserve clear answers.
         </p>
@@ -420,14 +400,6 @@
           Aligning signals, comparing results, and finding what matters. Café,
           façade, naïve. © 2026 · €123.45 →
         </p>
-        <p class="meta">450 · BookItalic</p>
-        <p style="font-size: 28px; font-style: italic; font-weight: 450">
-          Good questions deserve clear answers.
-        </p>
-        <p style="font-size: 14px; font-style: italic; font-weight: 450">
-          Aligning signals, comparing results, and finding what matters. Café,
-          façade, naïve. © 2026 · €123.45 →
-        </p>
         <p class="meta">500 · MediumItalic</p>
         <p style="font-size: 28px; font-style: italic; font-weight: 500">
           Good questions deserve clear answers.
@@ -436,7 +408,7 @@
           Aligning signals, comparing results, and finding what matters. Café,
           façade, naïve. © 2026 · €123.45 →
         </p>
-        <p class="meta">600 · SemiboldItalic</p>
+        <p class="meta">600 · SemiBoldItalic</p>
         <p style="font-size: 28px; font-style: italic; font-weight: 600">
           Good questions deserve clear answers.
         </p>

@@ -10,12 +10,14 @@ from fontTools.pens.basePen import BasePen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.svgLib.path import parse_path
 from fontTools.ttLib import TTFont
-from shapely import affinity
+from shapely import affinity, set_precision
 from shapely.geometry import LineString, Point, box
 from shapely.geometry.polygon import orient
 from shapely.ops import unary_union
 
 from sources.figures import add_figures, features as figure_features
+from sources.font_metadata import COPYRIGHT, VERSION, finish_metadata
+from sources.ufo_export import export_ufo
 from sources.italics import ITALIC_GLYPHS
 from sources.latin import LATIN, extend_latin
 from sources.marks import add_accents, features as mark_features
@@ -25,8 +27,8 @@ from sources.symbols import SYMBOLS, SYMBOL_WEIGHTS, SPACE_WIDTHS
 
 ROOT = Path(__file__).resolve().parent
 EPOCH = 3876940800
-TEXT_STYLES = {300: ('Light', 74), 400: ('Regular', 90), 450: ('Book', 97),
-               500: ('Medium', 104), 600: ('Semibold', 118), 700: ('Bold', 132)}
+TEXT_STYLES = {300: ('Light', 74), 400: ('Regular', 90),
+               500: ('Medium', 104), 600: ('SemiBold', 118), 700: ('Bold', 132)}
 
 
 class FlattenPen(BasePen):
@@ -110,6 +112,9 @@ def glyph_name(char):
 
 def tt_glyph(shape):
     pen = TTGlyphPen(None)
+    # Quantize topology as a whole, not each vertex independently: rounding a
+    # narrow corner pointwise can create self-intersections or reversed edges.
+    shape = set_precision(shape, grid_size=1)
     if not shape.is_empty:
         polygons = [shape] if shape.geom_type == 'Polygon' else shape.geoms
         for polygon in polygons:
@@ -196,23 +201,23 @@ def build(optical, weight=400, italic=False):
     fb.setupNameTable({
         'familyName': family if weight in (400, 700) else f'{family} {style}',
         'styleName': legacy_style,
-        'typographicFamily': family,
-        'typographicSubfamily': subfamily,
-        'uniqueFontIdentifier': f'AltertableSans-{optical}-{filename_style}-0.013',
+        **({'typographicFamily': family, 'typographicSubfamily': subfamily}
+           if weight not in (400, 700) else {}),
+        'uniqueFontIdentifier': f'{VERSION};ATBL;AltertableSans{optical}-{filename_style}',
         'fullName': f'{family} {subfamily}',
         'psName': f'AltertableSans{optical}-{filename_style}',
-        'version': 'Version 0.013',
-        'copyright': 'Copyright 2026 The Altertable Sans Project Authors',
+        'version': f'Version {VERSION}',
+        'copyright': COPYRIGHT,
         'licenseDescription': 'Licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
         'description': 'Original experimental proofing font. Not production-ready.',
     })
     # Win clipping bounds include two stacked marks; typographic line metrics stay fixed.
     fb.setupOS2(sTypoAscender=1000, sTypoDescender=-280, sTypoLineGap=0,
-                usWinAscent=1250, usWinDescent=750, sxHeight=540, sCapHeight=720,
+                usWinAscent=1250, usWinDescent=440, sxHeight=540, sCapHeight=720,
                 version=4,
                 usWeightClass=weight, usWidthClass=5, fsType=0,
-                fsSelection=(0x81 | (0x20 if weight == 700 else 0)) if italic else (0xA0 if weight == 700 else (0xC0 if weight == 400 else 0x80)))
+                fsSelection=(0x81 | (0x20 if weight == 700 else 0)) if italic else (0xA0 if weight == 700 else 0xC0))
     fb.setupPost(italicAngle=-10 if italic else 0)
     fb.setupMaxp()
     # Propagate the seed pairs to their precomposed accented counterparts.
@@ -225,14 +230,17 @@ def build(optical, weight=400, italic=False):
         for lchar in groups[left]:
             for rchar in groups[right]:
                 rules.append(f'pos {glyph_name(lchar)} {glyph_name(rchar)} {value};')
-    addOpenTypeFeaturesFromString(fb.font, 'languagesystem DFLT dflt;\n'
+    feature_text = ('languagesystem DFLT dflt;\n'
                                  'languagesystem latn dflt;\nfeature kern {\nlookupflag IgnoreMarks;\n'
                                  + '\n'.join(rules) + '\n} kern;\n' + attachment_features + figure_features(glyph_name))
+    addOpenTypeFeaturesFromString(fb.font, feature_text)
     fb.font.recalcTimestamp = False
     fb.font['head'].macStyle = (1 if weight == 700 else 0) | (2 if italic else 0)
     fb.font['head'].created = EPOCH
     fb.font['head'].modified = EPOCH
+    finish_metadata(fb.font, optical, weight, style, italic)
     path = ROOT / 'fonts' / f'AltertableSans{optical}-{filename_style}.ttf'
+    export_ufo(fb.font, feature_text, ROOT / 'sources' / 'ufo' / path.with_suffix('.ufo').name)
     fb.save(path)
     font = TTFont(path, recalcTimestamp=False)
     font.flavor = 'woff2'
